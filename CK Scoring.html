@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Clouds & Keys — iCloud Security Scorecard</title>
+<meta name="description" content="Clouds & Keys — iCloud Security Scorecard helps you assess your Apple ID, iPhone, and iCloud security with a guided checklist of critical protections."/>
+<meta name="keywords" content="iCloud security, Apple ID protection, iPhone privacy, iCloud backup, two-factor authentication, advanced data protection, Clouds and Keys"/>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- JSON-LD Schema for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Clouds & Keys — iCloud Security Scorecard",
+  "provider": {
+    "@type": "Organization",
+    "name": "Clouds & Keys",
+    "url": "https://www.cloudsandkeys.com",
+    "logo": "https://www.cloudsandkeys.com/logo.png"
+  },
+  "description": "A guided checklist to audit and improve iCloud and iPhone security settings, including Apple ID protections, device security, and privacy features.",
+  "areaServed": "Worldwide",
+  "serviceType": "iCloud Security Audit",
+  "audience": {
+    "@type": "Consumer",
+    "audienceType": "iPhone and iCloud Users"
+  }
+}
+</script>
+
+<style>
+  .badge{display:inline-block;font-weight:700;padding:1rem 2rem;border-radius:.5rem;min-width:160px;text-align:center}
+  .badge-min{background:#22c55e;color:#fff}
+  .badge-low{background:#eab308;color:#fff}
+  .badge-elev{background:#f97316;color:#fff}
+  .badge-high{background:#ef4444;color:#fff}
+
+  .sev-critical{color:#ef4444;font-weight:700}
+  .sev-high{color:#f97316;font-weight:700}
+  .sev-medium{color:#eab308;font-weight:700}
+  .sev-low{color:#22c55e;font-weight:700}
+
+  .btn-pill{border-radius:9999px;padding:.4rem 1rem;font-size:.85rem;font-weight:600;color:#fff}
+  .btn-blue{background:#2563eb} .btn-blue:hover{background:#1d4ed8}
+  .btn-red{background:#ef4444} .btn-red:hover{background:#dc2626}
+
+  label{display:block;margin:.5rem 0;font-weight:600}
+  p{margin:0 0 .5rem 1.5rem;font-size:.875rem;line-height:1.3}
+
+  /* Hidden SEO heading */
+  h1.seo-hidden{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+</style>
+</head>
+<body class="bg-gray-50">
+<div class="max-w-5xl mx-auto p-6 space-y-6">
+
+  <!-- Hidden SEO header -->
+  <h1 class="seo-hidden">Clouds &amp; Keys — iCloud Security Scorecard</h1>
+
+  <!-- Client Info -->
+  <div class="bg-white shadow rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div><label class="block text-sm font-medium">Client Name</label><input id="client" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"/></div>
+    <div><label class="block text-sm font-medium">Consultant</label><input id="consultant" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"/></div>
+    <div><label class="block text-sm font-medium">Date</label><input id="date" class="mt-1 w-full rounded-md border-gray-300 shadow-sm" readonly/></div>
+    <div><label class="block text-sm font-medium">Model</label><input id="model" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"/></div>
+    <div><label class="block text-sm font-medium">Serial</label><input id="serial" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"/></div>
+    <div><label class="block text-sm font-medium">iOS Version</label><input id="ios" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"/></div>
+  </div>
+
+  <!-- Checklist -->
+  <div id="checklist" class="space-y-6">
+
+    <!-- Account Protection -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-lg font-bold mb-2">🔑 Account Protection</h2>
+
+      <label><input type="checkbox" data-id="emails" data-label="Apple ID: Emails & Phone Numbers" data-sev="critical"> Apple ID: Emails &amp; Phone Numbers <span class="sev-critical">Critical</span></label>
+      <p>Why it matters: Keeps your recovery info current so you don’t lose access.</p>
+      <p>Action: Settings → [your name] → Sign-In & Security → Account Information.</p>
+
+      <label><input type="checkbox" data-id="twofactor" data-label="Apple ID: Two-Factor Authentication & Trusted Devices" data-sev="critical"> Apple ID: Two-Factor Authentication &amp; Trusted Devices <span class="sev-critical">Critical</span></label>
+      <p>Why it matters: Protects against stolen-password logins and ensures only your devices can receive codes.</p>
+      <p>Action: Settings → [your name] → Sign-In & Security → Two-Factor Authentication.</p>
+
+      <label><input type="checkbox" data-id="recoverykey" data-label="Apple ID: Recovery Key" data-sev="critical"> Apple ID: Recovery Key <span class="sev-critical">Critical</span></label>
+      <p>Why it matters: Master key to regain access (essential with ADP).</p>
+      <p>Action: Settings → [your name] → Sign-In & Security → Recovery Key.</p>
+
+      <label><input type="checkbox" data-id="adp" data-label="Advanced Data Protection" data-sev="high"> Advanced Data Protection <span class="sev-high">High</span></label>
+      <p>Why it matters: Encrypts most iCloud data end-to-end.</p>
+      <p>Action: Settings → [your name] → iCloud → Advanced Data Protection.</p>
+
+      <label><input type="checkbox" data-id="securitykeys" data-label="Security Keys" data-sev="high"> Security Keys <span class="sev-high">High</span></label>
+      <p>Why it matters: Provides phishing-resistant logins with no fallback.</p>
+      <p>Action: Settings → [your name] → Sign-In & Security → Security Keys.</p>
+
+      <label><input type="checkbox" data-id="weboff" data-label="Access iCloud Data on the Web — OFF" data-sev="high"> Access iCloud Data on the Web — OFF <span class="sev-high">High</span></label>
+      <p>Why it matters: Reduces attack surface from web logins.</p>
+      <p>Action: Settings → [your name] → iCloud → Access iCloud Data on the Web.</p>
+
+      <label><input type="checkbox" data-id="recoverycontacts" data-label="Apple ID: Recovery Contacts" data-sev="medium"> Apple ID: Recovery Contacts <span class="sev-medium">Medium</span></label>
+      <p>Why it matters: Trusted people can help you get back in.</p>
+      <p>Action: Settings → [your name] → Account Recovery → Add Recovery Contact.</p>
+
+      <label><input type="checkbox" data-id="keychain" data-label="iCloud Passwords & Keychain" data-sev="medium"> iCloud Passwords &amp; Keychain <span class="sev-medium">Medium</span></label>
+      <p>Why it matters: Stores strong passwords & passkeys securely in iCloud.</p>
+      <p>Action: Settings → [your name] → iCloud → Passwords → Sync this iPhone.</p>
+    </div>
+
+    <!-- Device Protection -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-lg font-bold mb-2">📱 Device Protection</h2>
+
+      <label><input type="checkbox" data-id="passcode" data-label="Require Passcode" data-sev="critical"> Require Passcode <span class="sev-critical">Critical</span></label>
+      <p>Why it matters: Foundation of iPhone encryption.</p>
+      <p>Action: Settings → Face ID & Passcode → Turn Passcode On.</p>
+
+      <label><input type="checkbox" data-id="backup" data-label="iCloud Backup (Reviewed)" data-sev="critical"> iCloud Backup (Reviewed) <span class="sev-critical">Critical</span></label>
+      <p>Why it matters: Ensures you can recover data after loss/damage.</p>
+      <p>Action: Settings → [your name] → iCloud → iCloud Backup.</p>
+
+      <label><input type="checkbox" data-id="findmy" data-label="Find My iPhone (Reviewed)" data-sev="critical"> Find My iPhone (Reviewed) <span class="sev-critical">Critical</span></label>
+      <p>Why it matters: Locks and locates a lost/stolen device.</p>
+      <p>Action: Settings → [your name] → Find My → Find My iPhone.</p>
+
+      <label><input type="checkbox" data-id="erase" data-label="Erase Data after 10 Failed Attempts" data-sev="critical"> Erase Data after 10 Failed Attempts <span class="sev-critical">Critical</span></label>
+      <p>Why it matters: Stops brute-force passcode guessing.</p>
+      <p>Action: Settings → Face ID & Passcode → Toggle Erase Data.</p>
+
+      <label><input type="checkbox" data-id="software" data-label="Software Update (Automatic)" data-sev="critical"> Software Update (Automatic) <span class="sev-critical">Critical</span></label>
+      <p>Why it matters: Patches known iOS vulnerabilities quickly.</p>
+      <p>Action: Settings → General → Software Update → Automatic Updates.</p>
+
+      <label><input type="checkbox" data-id="stolen" data-label="Stolen Device Protection" data-sev="high"> Stolen Device Protection <span class="sev-high">High</span></label>
+      <p>Why it matters: Blocks sensitive changes even if a thief knows your passcode.</p>
+      <p>Action: Settings → Face ID & Passcode → Stolen Device Protection.</p>
+    </div>
+
+    <!-- Privacy -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-lg font-bold mb-2">🌐 Privacy</h2>
+
+      <label><input type="checkbox" data-id="safety" data-label="Safety Check" data-sev="high"> Safety Check <span class="sev-high">High</span></label>
+      <p>Why it matters: Quickly reset or review sharing in emergencies.</p>
+      <p>Action: Settings → Privacy & Security → Safety Check.</p>
+
+      <label><input type="checkbox" data-id="attention" data-label="Require Attention for Face ID" data-sev="medium"> Require Attention for Face ID <span class="sev-medium">Medium</span></label>
+      <p>Why it matters: Prevents unlock while you’re asleep or unaware.</p>
+      <p>Action: Settings → Face ID & Passcode → Require Attention.</p>
+
+      <label><input type="checkbox" data-id="ckv" data-label="Contact Key Verification (CKV)" data-sev="medium"> Contact Key Verification (CKV) <span class="sev-medium">Medium</span></label>
+      <p>Why it matters: Confirms secure iMessage/FaceTime sessions.</p>
+      <p>Action: Settings → [your name] → iCloud → Contact Key Verification.</p>
+
+      <label><input type="checkbox" data-id="vpn" data-label="VPN & Device Management (Reviewed)" data-sev="low"> VPN &amp; Device Management (Reviewed) <span class="sev-low">Low</span></label>
+      <p>Why it matters: Ensures no rogue profiles control your device.</p>
+      <p>Action: Settings → General → VPN & Device Management.</p>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="bg-white shadow rounded-lg p-6 flex flex-col md:flex-row gap-6">
+    <div class="flex-1 text-center space-y-3">
+      <h2 class="text-lg font-semibold">Overall Risk Level</h2>
+      <span id="riskBadge" class="badge badge-high text-xl">High</span>
+      <div class="space-x-2">
+        <button onclick="calculate()" class="btn-pill btn-blue">Calculate</button>
+        <button onclick="clearAll()" class="btn-pill btn-red">Clear</button>
+      </div>
+    </div>
+    <div class="flex-1">
+      <h2 class="text-lg font-semibold">Results (Clean Text)</h2>
+      <textarea id="results" class="w-full h-64 border rounded p-2 font-mono text-sm"></textarea>
+      <button onclick="copyText()" class="btn-pill btn-blue mt-2">Copy Clean Text</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('date').value = new Date().toISOString().slice(0,10);
+
+function state(id){const el=document.querySelector(`input[data-id="${id}"]`);return !!(el && el.checked);}
+
+function calculate(){
+  const enabled=[],missing=[];
+  document.querySelectorAll('#checklist input[type="checkbox"]').forEach(cb=>{
+    (cb.checked?enabled:missing).push(cb.dataset.label);
+  });
+
+  let incomplete=false;
+  document.querySelectorAll('#checklist input[data-sev="critical"]').forEach(cb=>{
+    if(!cb.checked) incomplete=true;
+  });
+
+  // Risk logic
+  let risk='Minimal',klass='badge badge-min';
+  if(incomplete){risk='High';klass='badge badge-high';}
+  else {
+    const barriersMissing=!state('stolen'); // only check stolen device protection
+    const phishingDefense=state('weboff')||state('securitykeys');
+    if(barriersMissing||!phishingDefense){risk='Low';klass='badge badge-low';}
+  }
+
+  const b=document.getElementById('riskBadge');
+  b.textContent=risk;b.className=klass+' text-xl';
+
+  const lines=[
+    'Clouds & Keys — iCloud Security Scorecard',
+    `Client: ${document.getElementById('client').value||''}`,
+    `Consultant: ${document.getElementById('consultant').value||''}`,
+    `Date: ${document.getElementById('date').value||''}`,
+    `Model: ${document.getElementById('model').value||''}`,
+    `Serial: ${document.getElementById('serial').value||''}`,
+    `iOS Version: ${document.getElementById('ios').value||''}`,
+    '',
+    `Status: ${incomplete?'Incomplete':'Complete'}`,
+    `Risk: ${risk}`,
+    '',
+    'Enabled Protections:',
+    ...enabled.map(v=>`- ${v}`),
+    '',
+    'Missing Protections:',
+    ...missing.map(v=>`- ${v}`)
+  ];
+  document.getElementById('results').value=lines.join('\n');
+}
+
+function clearAll(){
+  document.querySelectorAll('#checklist input[type="checkbox"]').forEach(cb=>cb.checked=false);
+  const b=document.getElementById('riskBadge');b.textContent='';b.className='badge badge-low text-xl';
+  document.getElementById('results').value='';
+}
+
+function copyText(){
+  const txt=document.getElementById('results').value;
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(txt);}
+  else{const ta=document.getElementById('results');ta.focus();ta.select();document.execCommand('copy');}
+}
+</script>
+</body>
+</html>
