@@ -42,80 +42,80 @@
   <div class="card">
     <h2>🔑 Account Protection</h2>
 
-    <!-- 1 -->
-    <label><input type="checkbox" data-id="emails" data-label="Apple ID: Emails & Phone Numbers" data-sev="critical"> Apple ID: Emails & Phone Numbers <span class="sev-critical">Critical</span></label>
+ <!-- 1 -->
+    <label><input type="checkbox" data-id="emails" data-label="Apple ID: Emails & Phone Numbers" data-sev="critical"> Emails & Phone Numbers <span class="sev-critical">Critical</span></label>
     <p>Why it matters: Keeps your sign-in and recovery info current so you don’t lose access or miss alerts.</p>
-    <p>Action: Settings → [your name] → Sign-In & Security → Account Information.</p>
+    <p>Action: Settings → [your name] → Sign-In & Security → Verify Emails & Phone Numbers.</p>
 
     <!-- 2 -->
-    <label><input type="checkbox" data-id="twofactor" data-label="Apple ID: Two-Factor Authentication & Trusted Devices" data-sev="critical"> Apple ID: Two-Factor Authentication & Trusted Devices <span class="sev-critical">Critical</span></label>
+    <label><input type="checkbox" data-id="twofactor" data-label="Apple ID: Two-Factor Authentication & Trusted Devices" data-sev="critical"> Two-Factor Authentication & Trusted Devices <span class="sev-critical">Critical</span></label>
     <p>Why it matters: Blocks password-only logins and ensures only your devices receive verification codes.</p>
-    <p>Action: Settings → [your name] → Sign-In & Security → Two-Factor Authentication (ensure ON + correct trusted number).</p>
+    <p>Action: Settings → [your name] → Sign-In & Security → Two-Factor Authentication → ON + Verify Trusted Phone Number and devices.</p>
 
     <!-- 3 -->
-    <label><input type="checkbox" data-id="recoverykey" data-label="Apple ID: Recovery Key" data-sev="critical"> Apple ID: Recovery Key <span class="sev-critical">Critical</span></label>
+    <label><input type="checkbox" data-id="recoverykey" data-label="Apple ID: Recovery Key" data-sev="critical"> Recovery Key <span class="sev-critical">Critical</span></label>
     <p>Why it matters: Master key to regain access (essential with Advanced Data Protection).</p>
-    <p>Action: Settings → [your name] → Sign-In & Security → Recovery Key → Turn On / Create New; record & store safely.</p>
+    <p>Action: Settings → [your name] → Sign-In & Security → Recovery Key → On / Create New, if the key has been lost or stolen.</p>
 
     <!-- 4 -->
     <label><input type="checkbox" data-id="adp" data-label="Advanced Data Protection" data-sev="high"> Advanced Data Protection <span class="sev-high">High</span></label>
     <p>Why it matters: End-to-end encrypts most iCloud data so only you can access it.</p>
-    <p>Action: Settings → [your name] → iCloud → Advanced Data Protection → Turn On.</p>
+    <p>Action: Settings → [your name] → iCloud → Advanced Data Protection → On.</p>
 
     <!-- 5 -->
     <label><input type="checkbox" data-id="securitykeys" data-label="Security Keys" data-sev="high"> Security Keys <span class="sev-high">High</span></label>
     <p>Why it matters: Phishing-resistant login with no fallbacks; dramatically reduces account-takeover risk.</p>
-    <p>Action: Settings → [your name] → Sign-In & Security → Security Keys → Add keys.</p>
+    <p>Action: Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Security Keys → Add Security Keys.</p>
 
     <!-- 6 -->
-    <label><input type="checkbox" data-id="weboff" data-label="Access iCloud Data on the Web — OFF" data-sev="high"> Access iCloud Data on the Web — OFF <span class="sev-high">High</span></label>
+    <label><input type="checkbox" data-id="weboff" data-label="Access iCloud Data on the Web — OFF" data-sev="high"> Access iCloud Data on the Web <span class="sev-high">High</span></label>
     <p>Why it matters: Reduces attack surface from browser-based access and phishing.</p>
     <p>Action: Settings → [your name] → iCloud → Access iCloud Data on the Web → Off (enable only when needed).</p>
 
     <!-- 7 -->
-    <label><input type="checkbox" data-id="recoverycontacts" data-label="Apple ID: Recovery Contacts" data-sev="medium"> Apple ID: Recovery Contacts <span class="sev-medium">Medium</span></label>
+    <label><input type="checkbox" data-id="recoverycontacts" data-label="Apple ID: Recovery Contacts" data-sev="medium"> Recovery Contacts </label>
     <p>Why it matters: Trusted people can help you recover your account if you’re locked out.</p>
-    <p>Action: Settings → [your name] → Account Recovery → Add Recovery Contact.</p>
+    <p>Action: Settings → [your name] → Sign-In & Security → Recovery Methods → Recovery Contacts → Add Recovery Contact.</p>
 
     <!-- 8 -->
-    <label><input type="checkbox" data-id="keychain" data-label="iCloud Passwords & Keychain" data-sev="medium"> iCloud Passwords & Keychain <span class="sev-medium">Medium</span></label>
+    <label><input type="checkbox" data-id="keychain" data-label="iCloud Passwords & Keychain" data-sev="medium"> iCloud Passwords & Keychain </label>
     <p>Why it matters: Stores and syncs strong, unique passwords and passkeys securely across devices.</p>
-    <p>Action: Settings → [your name] → iCloud → Passwords → Turn on “Sync this iPhone.”</p>
+    <p>Action: Settings → [your name] → iCloud → Passwords → Sync this iPhone → On.</p>
   </div>
 
-  <!-- Device Protection -->
+    <!-- Device Protection -->
   <div class="card">
     <h2>📱 Device Protection</h2>
 
     <!-- 9 -->
     <label><input type="checkbox" data-id="passcode" data-label="Require Passcode" data-sev="critical"> Require Passcode <span class="sev-critical">Critical</span></label>
-    <p>Why it matters: Core of iPhone encryption — without a passcode, anyone with your phone can read your data.</p>
-    <p>Action: Settings → Face ID & Passcode → Turn Passcode On (use 6+ digits).</p>
+    <p>Why it matters: Core of iPhone encryption - without a passcode, anyone with your phone can read your data.</p>
+    <p>Action: Settings → Face ID & Passcode → Require Passcode → Immediately (use 6+ digits).</p>
 
     <!-- 10 -->
     <label><input type="checkbox" data-id="backup" data-label="iCloud Backup (Reviewed)" data-sev="critical"> iCloud Backup (Reviewed) <span class="sev-critical">Critical</span></label>
     <p>Why it matters: Ensures you can restore your data after loss, theft, or damage.</p>
-    <p>Action: Settings → [your name] → iCloud → iCloud Backup → Turn on “Back Up This iPhone” and tap “Back Up Now.”</p>
+    <p>Action: Settings → [your name] → iCloud → iCloud Backup → Back Up This iPhone → On.</p>
 
     <!-- 11 -->
     <label><input type="checkbox" data-id="findmy" data-label="Find My iPhone (Reviewed)" data-sev="critical"> Find My iPhone (Reviewed) <span class="sev-critical">Critical</span></label>
-    <p>Why it matters: Lets you locate and lock a lost/stolen device so it can’t be reused.</p>
+    <p>Why it matters: Lets you locate and lock or wipe a lost/stolen device so it can’t be reused.</p>
     <p>Action: Settings → [your name] → Find My → Find My iPhone → Turn on Find My iPhone, Find My network, and Send Last Location.</p>
 
     <!-- 12 -->
     <label><input type="checkbox" data-id="erase" data-label="Erase Data after 10 Failed Attempts" data-sev="critical"> Erase Data after 10 Failed Attempts <span class="sev-critical">Critical</span></label>
     <p>Why it matters: Stops brute-force passcode guessing by wiping data after too many failures.</p>
-    <p>Action: Settings → Face ID & Passcode → Turn on “Erase Data.”</p>
+    <p>Action: Settings → Face ID & Passcode → Erase Data → On.</p>
 
     <!-- 13 -->
     <label><input type="checkbox" data-id="software" data-label="Software Update (Automatic)" data-sev="critical"> Software Update (Automatic) <span class="sev-critical">Critical</span></label>
     <p>Why it matters: Installs the latest security patches quickly to close known vulnerabilities.</p>
-    <p>Action: Settings → General → Software Update → Automatic Updates → Turn on “Automatically Install.”</p>
+    <p>Action: Settings → General → Software Update → Automatic Updates → “Automatically Install.”</p>
 
     <!-- 14 -->
     <label><input type="checkbox" data-id="stolen" data-label="Stolen Device Protection" data-sev="high"> Stolen Device Protection <span class="sev-high">High</span></label>
     <p>Why it matters: Blocks sensitive account changes even if a thief knows your passcode.</p>
-    <p>Action: Settings → Face ID & Passcode → Stolen Device Protection → Turn On.</p>
+    <p>Action: Settings → Face ID & Passcode → Stolen Device Protection → On.</p>
   </div>
 
   <!-- Privacy -->
@@ -128,12 +128,12 @@
     <p>Action: Settings → Privacy & Security → Safety Check → Manage Sharing & Access (or Emergency Reset when urgent).</p>
 
     <!-- 16 -->
-    <label><input type="checkbox" data-id="attention" data-label="Require Attention for Face ID" data-sev="medium"> Require Attention for Face ID <span class="sev-medium">Medium</span></label>
+    <label><input type="checkbox" data-id="attention" data-label="Require Attention for Face ID" data-sev="medium"> Require Attention for Face ID </label>
     <p>Why it matters: Prevents unlock while you’re asleep or not looking at the device.</p>
     <p>Action: Settings → Face ID & Passcode → Require Attention for Face ID → On.</p>
 
     <!-- 17 -->
-    <label><input type="checkbox" data-id="ckv" data-label="Contact Key Verification (CKV)" data-sev="medium"> Contact Key Verification (CKV) <span class="sev-medium">Medium</span></label>
+    <label><input type="checkbox" data-id="ckv" data-label="Contact Key Verification (CKV)" data-sev="medium"> Contact Key Verification </label>
     <p>Why it matters: Confirms secure iMessage/FaceTime sessions with trusted contacts.</p>
     <p>Action: Settings → [your name] → Contact Key Verification → On.</p>
   </div>
