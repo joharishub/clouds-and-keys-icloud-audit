@@ -32,6 +32,16 @@
   #ck-scorecard .risk.low { color:#f59e0b; }      /* yellow */
   #ck-scorecard .risk.minimal { color:#10b981; }  /* green */
   @media (max-width:700px){ #ck-scorecard .row { grid-template-columns:1fr; } }
+/* Legend styling */
+#ck-scorecard .legend {
+  line-height: 1.6;            /* adds breathing space between rows */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#ck-scorecard .legend-item {
+  margin-bottom: 6px;           /* fine-tuned per-row spacing */
+}
 </style>
 
 <script type="application/ld+json">
@@ -98,12 +108,11 @@
   </div>
 
   <!-- Legend -->
-  <div class="legend card">
-    <strong>Legend:</strong>
-    <div>🔴 Critical — Must-have protections</div>
-    <div>🟠 High — Strong protections that reduce most risks</div>
-    <div>⚪ Optional — Helpful privacy/awareness/recovery</div>
-  </div>
+  <div class="legend">
+  <div class="legend-item">🔴 <strong>Critical</strong> — Must-have protections</div>
+  <div class="legend-item">🟠 <strong>High</strong> — Strong protections that reduce most risks</div>
+  <div class="legend-item">⚪ <strong>Optional</strong> — Helpful privacy/awareness/recovery</div>
+</div>
 
   <!-- ===================== Account Protection ===================== -->
   <div class="card">
