@@ -1,8 +1,8 @@
 <!-- 
-Clouds & Keys — iCloud Security Audit Wizard (v13)
+Clouds & Keys — iCloud Security Audit Wizard (v14.1)
 © 2025 Johari Hamilton. All rights reserved.
-Original code, scoring logic, and written content by Johari Hamilton.
-This file is fully self-contained and style-scoped to #ck-wizard.
+Original code, scoring/classification logic, and written content by Johari Hamilton.
+This file is self-contained (no external CSS/JS) and style-scoped to #ck-wizard.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +20,7 @@ This file is fully self-contained and style-scoped to #ck-wizard.
   #ck-wizard p.muted { color:#6B7280; margin:0 0 16px; }
   #ck-wizard .center { text-align:center; }
 
-  /* Brand blues */
+  /* Brand palette */
   :root {
     --ck-blue:#2563EB;  /* primary */
     --ck-blue2:#3882F6; /* accent */
@@ -38,6 +38,7 @@ This file is fully self-contained and style-scoped to #ck-wizard.
   #ck-wizard .btn-primary { background: var(--ck-blue); color:#fff; }
   #ck-wizard .btn-secondary { background:#fff; color: var(--ck-blue); border-color: var(--ck-blue); }
   #ck-wizard .btn-ghost { background:#fff; color:#111827; border-color:#E5E7EB; }
+  #ck-wizard .btn-danger { background:#fff; color: var(--ck-red); border-color: #FCA5A5; }
   #ck-wizard .btn:disabled { opacity:.5; cursor:not-allowed; }
 
   /* Header badge */
@@ -47,16 +48,19 @@ This file is fully self-contained and style-scoped to #ck-wizard.
   #ck-wizard .badge.minimal { background:#ECFDF5; color:var(--ck-green); border-color:#BBF7D0; }
   #ck-wizard .badge.neutral { background:#F3F4F6; color:#374151; border-color:#E5E7EB; }
 
-  /* Progress bar */
+  /* Progress bar (now under badge) */
+  #ck-wizard .progress-wrap { margin-top:10px; }
   #ck-wizard .progress { height:8px; width:100%; background:#E5E7EB; border-radius:999px; overflow:hidden; }
   #ck-wizard .progress > i { display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--ck-blue),var(--ck-blue2)); transition:width .25s ease; }
+  #ck-wizard .notes { font-size:13px; color:#6B7280; margin-top:6px; }
 
   /* Step layout */
-  #ck-wizard .step-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+  #ck-wizard .topbar { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
   #ck-wizard .step-title { font-size:18px; font-weight:700; color:#0F172A; }
   #ck-wizard .sev { font-weight:700; }
   #ck-wizard .sev.critical { color:var(--ck-red); }
   #ck-wizard .sev.high { color:var(--ck-yellow); }
+  #ck-wizard .sev.low { color:#10B981; } /* low shown only in drawer legend, step header shows Critical/High only */
 
   #ck-wizard .why, #ck-wizard .action { background:#F9FAFB; border:1px solid #E5E7EB; border-radius:12px; padding:12px; }
   #ck-wizard .why h3, #ck-wizard .action h3 { margin:0 0 6px; font-size:13px; font-weight:800; color:#111827; letter-spacing:.2px; }
@@ -64,19 +68,44 @@ This file is fully self-contained and style-scoped to #ck-wizard.
 
   #ck-wizard .controls { display:flex; gap:10px; flex-wrap:wrap; }
   #ck-wizard .foot { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px; }
-  #ck-wizard .notes { font-size:13px; color:#6B7280; }
 
   /* Summary / Report */
   #ck-wizard .summary { margin-top:16px; }
   #ck-wizard .report { width:100%; min-height:180px; padding:12px; border:1px solid #E5E7EB; border-radius:12px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:13px; color:#111827; background:#fff; }
   #ck-wizard .list { padding-left:20px; }
   #ck-wizard .list li { margin:4px 0; }
-  #ck-wizard .legend { font-size:13px; color:#6B7280; display:flex; align-items:center; gap:14px; margin:8px 0 0; }
+
+  /* Legend dots */
+  #ck-wizard .legend { font-size:13px; color:#6B7280; display:flex; align-items:center; gap:14px; margin:8px 0 0; flex-wrap:wrap; }
   #ck-wizard .dot { width:10px; height:10px; border-radius:999px; display:inline-block; }
-  #ck-wizard .dot.red{ background:var(--ck-red); } .dot.amber{ background:var(--ck-yellow); } .dot.green{ background:var(--ck-green); }
+  #ck-wizard .dot.green{ background:var(--ck-green); } 
+  #ck-wizard .dot.amber{ background:var(--ck-yellow); } 
+  #ck-wizard .dot.gray{ background:#9CA3AF; } 
+
+  /* Slide-out drawer */
+  #ck-wizard .drawer-mask { position: fixed; inset:0; background: rgba(17,24,39,.35); backdrop-filter: blur(1px); opacity:0; pointer-events:none; transition: opacity .2s ease; }
+  #ck-wizard .drawer { position: fixed; top:0; right:-360px; width: 320px; max-width: 86vw; height:100%; background:#fff; border-left:1px solid #E5E7EB; box-shadow: -8px 0 24px rgba(0,0,0,.08); transition: right .25s ease; display:flex; flex-direction:column; }
+  #ck-wizard .drawer.open { right:0; }
+  #ck-wizard .drawer-mask.open { opacity:1; pointer-events:auto; }
+  #ck-wizard .drawer-head { padding:14px 16px; border-bottom:1px solid #E5E7EB; display:flex; align-items:center; justify-content:space-between; }
+  #ck-wizard .drawer-title { font-weight:800; color:#111827; }
+  #ck-wizard .drawer-body { padding:8px 0; overflow:auto; }
+  #ck-wizard .row { display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid #F3F4F6; cursor:pointer; }
+  #ck-wizard .row:hover { background:#F9FAFB; }
+  #ck-wizard .row .status { width:10px; height:10px; border-radius:999px; border:1px solid #E5E7EB; }
+  #ck-wizard .row .status.enabled { background: var(--ck-green); border-color: var(--ck-green); }
+  #ck-wizard .row .status.reviewed { background: var(--ck-yellow); border-color: var(--ck-yellow); }
+  #ck-wizard .row .status.skipped { background: #9CA3AF; border-color: #9CA3AF; }
+  #ck-wizard .row-title { font-size:14px; color:#111827; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
   /* Hide until started */
   #ck-wizard .hidden { display:none !important; }
+
+  /* Mobile spacing */
+  @media (max-width: 520px){
+    #ck-wizard .controls { gap:8px; }
+    #ck-wizard .btn { padding:9px 12px; }
+  }
 </style>
 </head>
 <body>
@@ -85,7 +114,7 @@ This file is fully self-contained and style-scoped to #ck-wizard.
     <!-- Landing -->
     <div id="landing" class="card center">
       <h1>iCloud Security Audit (Guided)</h1>
-      <p class="muted">A simple, step-by-step walkthrough of Apple’s key protections. Your risk badge updates live, and you’ll get a clean report at the end.</p>
+      <p class="muted">A step-by-step walkthrough of Apple’s key protections. Your risk badge updates live, and you’ll get a clean report at the end.</p>
       <div style="margin:12px 0 18px;">
         <span id="riskBadgeStart" class="badge neutral">Status: Not Started</span>
       </div>
@@ -94,24 +123,28 @@ This file is fully self-contained and style-scoped to #ck-wizard.
 
     <!-- Wizard -->
     <div id="wizard" class="card hidden">
-      <!-- Live badge + progress -->
-      <div class="step-head">
-        <div>
+      <!-- Top: badge + progress (bar under badge for mobile safety) -->
+      <div class="topbar">
+        <div style="flex:1 1 380px; min-width:260px;">
           <div id="riskBadge" class="badge neutral">Status: In Progress</div>
           <div class="legend">
-            <span><i class="dot red"></i> Critical</span>
-            <span><i class="dot amber"></i> High</span>
-            <span><i class="dot green"></i> Completed</span>
+            <span><i class="dot green"></i> Enabled</span>
+            <span><i class="dot amber"></i> Reviewed</span>
+            <span><i class="dot gray"></i> Skipped / Not set</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress"><i id="bar"></i></div>
+            <div class="notes" id="progressNote">Step 1 of 20</div>
           </div>
         </div>
-        <div style="min-width:220px;">
-          <div class="progress"><i id="bar"></i></div>
-          <div class="notes" id="progressNote">Step 1 of 17</div>
+        <div style="display:flex; gap:8px; align-items:flex-start;">
+          <button id="openDrawer" class="btn btn-secondary">View My Progress</button>
+          <button id="resetAudit" class="btn btn-danger">Reset</button>
         </div>
       </div>
 
       <!-- Step content -->
-      <div id="stepArea">
+      <div id="stepArea" style="margin-top:16px;">
         <div class="step-title" id="stepTitle"></div>
         <p class="muted" id="stepPath"></p>
 
@@ -133,7 +166,7 @@ This file is fully self-contained and style-scoped to #ck-wizard.
         <div class="foot">
           <button id="prev" class="btn btn-ghost">Back</button>
           <div class="notes" id="sevNote"></div>
-          <button id="next" class="btn btn-ghost">Next</button>
+          <!-- No Next button (auto-advance) -->
         </div>
       </div>
 
@@ -155,7 +188,7 @@ This file is fully self-contained and style-scoped to #ck-wizard.
         <div class="card" style="margin:10px 0;">
           <h3 style="margin:0 0 8px;">Clean Report Text</h3>
           <textarea id="reportOut" class="report" readonly></textarea>
-          <div style="margin-top:10px; display:flex; gap:10px;">
+          <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
             <button id="copyReport" class="btn btn-secondary">Copy Report</button>
             <button id="restart" class="btn btn-ghost">Start New Audit</button>
           </div>
@@ -163,142 +196,153 @@ This file is fully self-contained and style-scoped to #ck-wizard.
       </div>
     </div>
   </div>
+
+  <!-- Slide-out Drawer -->
+  <div id="drawerMask" class="drawer-mask"></div>
+  <aside id="drawer" class="drawer" aria-label="Progress drawer">
+    <div class="drawer-head">
+      <div class="drawer-title">Your Progress</div>
+      <button id="closeDrawer" class="btn btn-ghost">Close</button>
+    </div>
+    <div id="drawerBody" class="drawer-body"></div>
+  </aside>
 </div>
 
 <script>
 (function(){
-  // ====== DATA: 17 protections, v13 grouping/severity ======
-  // severity: "critical" or "high" (labels hidden from users except legend colors)
+  // ====== DATA: 20 protections (v14.1) ======
+  // severity: "critical" | "high" | "low"
   const protections = [
     // 🔑 Account Protection (7)
-    {
-      id:"acct_emails", cat:"Account Protection", sev:"critical",
+    { id:"acct_emails",  sev:"critical", cat:"Account Protection",
       title:"Emails & Phone Numbers",
       path:"Settings → [your name] → Sign-In & Security → Account Information.",
       why:"Keeps your sign-in and recovery info current so you don’t lose access or miss security alerts.",
       action:"Verify your Apple ID email and trusted phone number are current."
     },
-    {
-      id:"acct_2fa", cat:"Account Protection", sev:"critical",
+    { id:"acct_2fa",     sev:"critical", cat:"Account Protection",
       title:"Two-Factor Authentication & Trusted Devices",
       path:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication.",
       why:"Blocks password-only logins and ensures only trusted devices receive verification codes.",
       action:"Ensure 2FA is ON and your trusted number and device list are correct."
     },
-    {
-      id:"acct_rkey", cat:"Account Protection", sev:"critical",
+    { id:"acct_rkey",    sev:"critical", cat:"Account Protection",
       title:"Recovery Key",
       path:"Settings → [your name] → Sign-In & Security → Recovery Key.",
       why:"Master key to regain access; essential with Advanced Data Protection.",
       action:"Turn on Recovery Key or create a new one and store it safely."
     },
-    {
-      id:"acct_adp", cat:"Account Protection", sev:"high",
+    { id:"acct_adp",     sev:"high", cat:"Account Protection",
       title:"Advanced Data Protection",
       path:"Settings → [your name] → iCloud → Advanced Data Protection.",
       why:"End-to-end encrypts most iCloud data so only you can access it.",
       action:"Turn on Advanced Data Protection after setting a Recovery Key or Recovery Contact."
     },
-    {
-      id:"acct_keys", cat:"Account Protection", sev:"high",
+    { id:"acct_keys",    sev:"high", cat:"Account Protection",
       title:"Security Keys",
       path:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Security Keys.",
       why:"Phishing-resistant login with no fallbacks; dramatically reduces account-takeover risk.",
       action:"Add FIDO-certified security keys to your Apple ID."
     },
-    {
-      id:"acct_web", cat:"Account Protection", sev:"high",
+    { id:"acct_web",     sev:"high", cat:"Account Protection",
       title:"Access iCloud Data on the Web — OFF",
       path:"Settings → [your name] → iCloud → Access iCloud Data on the Web.",
       why:"Reduces attack surface from browser-based access and phishing.",
       action:"Turn this OFF and enable only when needed."
     },
-    {
-      id:"acct_rc", cat:"Account Protection", sev:"high",
+    { id:"acct_rc",      sev:"high", cat:"Account Protection",
       title:"Recovery Contacts",
       path:"Settings → [your name] → Sign-In & Security → Recovery Methods → Recovery Contacts.",
       why:"Trusted people can help you recover your account if you’re locked out.",
       action:"Add at least one Recovery Contact."
     },
 
-    // 📱 Device Protection (8)
-    {
-      id:"dev_passcode", cat:"Device Protection", sev:"critical",
+    // 📱 Device Protection (9)
+    { id:"dev_passcode", sev:"critical", cat:"Device Protection",
       title:"Require Passcode",
       path:"Settings → Face ID & Passcode.",
       why:"Core of iPhone encryption — without a passcode, anyone with your phone can read your data.",
       action:"Require Passcode and set it to ‘Immediately’ with a strong code."
     },
-    {
-      id:"dev_backup", cat:"Device Protection", sev:"critical",
+    { id:"dev_backup",   sev:"critical", cat:"Device Protection",
       title:"iCloud Backup",
       path:"Settings → [your name] → iCloud → iCloud Backup.",
       why:"Ensures you can restore your data after loss, theft, or damage.",
       action:"Turn on ‘Back Up This iPhone’ and run ‘Back Up Now’ to confirm recency."
     },
-    {
-      id:"dev_findmy", cat:"Device Protection", sev:"critical",
+    { id:"dev_findmy",   sev:"critical", cat:"Device Protection",
       title:"Find My iPhone",
       path:"Settings → [your name] → Find My → Find My iPhone.",
       why:"Lets you locate and lock a lost/stolen device so it can’t be reused.",
       action:"Turn on Find My iPhone, Find My network, and Send Last Location."
     },
-    {
-      id:"dev_erase10", cat:"Device Protection", sev:"critical",
+    { id:"dev_erase10",  sev:"critical", cat:"Device Protection",
       title:"Erase Data after 10 Failed Attempts",
       path:"Settings → Face ID & Passcode.",
       why:"Stops brute-force passcode guessing by wiping data after too many failures.",
       action:"Turn on ‘Erase Data’."
     },
-    {
-      id:"dev_updates", cat:"Device Protection", sev:"critical",
+    { id:"dev_updates",  sev:"critical", cat:"Device Protection",
       title:"Software Update (Automatic)",
       path:"Settings → General → Software Update → Automatic Updates.",
       why:"Installs the latest security patches quickly to close known vulnerabilities.",
       action:"Turn on ‘Automatically Install’ iOS updates."
     },
-    {
-      id:"dev_stolen", cat:"Device Protection", sev:"high",
+    { id:"dev_stolen",   sev:"high", cat:"Device Protection",
       title:"Stolen Device Protection",
       path:"Settings → Face ID & Passcode → Stolen Device Protection.",
       why:"Blocks sensitive account changes even if a thief knows your passcode.",
       action:"Turn on Stolen Device Protection."
     },
-    {
-      id:"dev_attention", cat:"Device Protection", sev:"high",
+    { id:"dev_attention",sev:"high", cat:"Device Protection",
       title:"Require Attention for Face ID",
       path:"Settings → Face ID & Passcode.",
       why:"Prevents unlock while you’re asleep or not looking at the device.",
       action:"Turn on ‘Require Attention for Face ID’."
     },
-    {
-      id:"dev_wired", cat:"Device Protection", sev:"high",
+    { id:"dev_wired",    sev:"high", cat:"Device Protection",
       title:"Wired Accessories (USB Accessories when locked)",
       path:"Settings → Face ID & Passcode.",
       why:"Blocks data access over Lightning/USB while locked.",
       action:"Keep ‘USB Accessories’ OFF unless necessary."
     },
+    { id:"dev_vpnmdm",   sev:"high", cat:"Device Protection",
+      title:"VPN & Device Management (Profiles)",
+      path:"Settings → General → VPN & Device Management.",
+      why:"Ensures no unauthorized configuration or management profiles control your iPhone.",
+      action:"Review installed profiles/MDM. Remove any unfamiliar entries."
+    },
 
-    // 🌐 Safe Browsing & Communication (2)
-    {
-      id:"safe_fraud", cat:"Safe Browsing & Communication", sev:"high",
+    // 🌐 Safe Browsing & Communication (4)
+    { id:"safe_fraud",   sev:"high", cat:"Safe Browsing & Communication",
       title:"Fraudulent Website Warning (Safari)",
       path:"Settings → Safari → Privacy & Security.",
       why:"Warns about known phishing or malicious sites.",
       action:"Turn on ‘Fraudulent Website Warning’."
     },
-    {
-      id:"safe_safetycheck", cat:"Safe Browsing & Communication", sev:"high",
+    { id:"safe_safetycheck", sev:"high", cat:"Safe Browsing & Communication",
       title:"Safety Check",
       path:"Settings → Privacy & Security → Safety Check.",
       why:"Quickly reset or review sharing and access in emergencies or after risk events.",
       action:"Use ‘Manage Sharing & Access’ (or ‘Emergency Reset’ when urgent)."
+    },
+    { id:"safe_notsecure", sev:"low", cat:"Safe Browsing & Communication",
+      title:"Not Secure Connection Warning (Safari)",
+      path:"Settings → Safari → Privacy & Security.",
+      why:"Alerts on unencrypted web pages to reduce credential exposure.",
+      action:"Keep ‘Show Not Secure Warnings’ ON."
+    },
+    { id:"safe_ckv",     sev:"low", cat:"Safe Browsing & Communication",
+      title:"Contact Key Verification (CKV)",
+      path:"Settings → [your name] → Contact Key Verification.",
+      why:"Confirms iMessage/FaceTime sessions with trusted contacts are authentic.",
+      action:"Turn on Contact Key Verification and compare codes with trusted contacts if needed."
     }
   ];
 
   // ====== STATE ======
   let idx = 0;
-  // status: "enabled" | "reviewed" | "skipped"
+  // status: "enabled" | "reviewed" | "skipped" | null
   const state = Object.fromEntries(protections.map(p => [p.id, null]));
 
   // ====== ELEMENTS ======
@@ -321,7 +365,13 @@ This file is fully self-contained and style-scoped to #ck-wizard.
   const markReview  = document.getElementById('markReview');
   const skip        = document.getElementById('skip');
   const prev        = document.getElementById('prev');
-  const next        = document.getElementById('next');
+
+  const openDrawer  = document.getElementById('openDrawer');
+  const closeDrawer = document.getElementById('closeDrawer');
+  const resetAudit  = document.getElementById('resetAudit');
+  const drawer      = document.getElementById('drawer');
+  const drawerMask  = document.getElementById('drawerMask');
+  const drawerBody  = document.getElementById('drawerBody');
 
   const summary     = document.getElementById('summary');
   const enabledList = document.getElementById('enabledList');
@@ -344,7 +394,6 @@ This file is fully self-contained and style-scoped to #ck-wizard.
   function computeRisk(){
     const missingCritical = protections.filter(p => p.sev==='critical' && state[p.id]!=='enabled');
     const missingHigh     = protections.filter(p => p.sev==='high' && state[p.id]!=='enabled');
-
     if(missingCritical.length>0) return {level:'High Risk', missingCritical, missingHigh};
     if(missingHigh.length>=2)    return {level:'Low Risk',  missingCritical, missingHigh};
     return {level:'Minimal Risk', missingCritical, missingHigh};
@@ -361,7 +410,11 @@ This file is fully self-contained and style-scoped to #ck-wizard.
     stepPath.textContent = p.path;
     why.textContent = p.why;
     action.textContent = p.action;
-    sevNote.innerHTML = `<span class="sev ${p.sev}">${p.sev==='critical'?'Critical':'High'}</span> • ${p.cat}`;
+
+    // Show severity in note (Critical/High; omit Low to keep UI clean)
+    let sevLabel = p.sev==='critical' ? 'Critical' : (p.sev==='high' ? 'High' : 'Optional');
+    let sevClass = p.sev==='critical' ? 'critical' : (p.sev==='high' ? 'high' : 'low');
+    sevNote.innerHTML = `<span class="sev ${sevClass}">${sevLabel}</span> • ${p.cat}`;
 
     // progress
     const pct = Math.round(((idx+1)/protections.length)*100);
@@ -370,10 +423,12 @@ This file is fully self-contained and style-scoped to #ck-wizard.
 
     // nav buttons
     prev.disabled = (idx===0);
-    next.disabled = (idx===protections.length-1);
 
     // live badge
     updateLiveBadge();
+
+    // Refresh drawer list statuses
+    renderDrawerList();
   }
 
   function finish(){
@@ -429,6 +484,39 @@ This file is fully self-contained and style-scoped to #ck-wizard.
     summary.classList.remove('hidden');
   }
 
+  function renderDrawerList(){
+    drawerBody.innerHTML = '';
+    protections.forEach((p, i)=>{
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.addEventListener('click', ()=>{
+        idx = i;
+        drawer.classList.remove('open');
+        drawerMask.classList.remove('open');
+        renderStep();
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
+      const dot = document.createElement('i');
+      dot.className = 'status ' + (state[p.id] ? state[p.id] : '');
+      const title = document.createElement('div');
+      title.className = 'row-title';
+      title.textContent = `${i+1}. ${p.title}`;
+      row.appendChild(dot);
+      row.appendChild(title);
+      drawerBody.appendChild(row);
+    });
+  }
+
+  function resetAll(){
+    Object.keys(state).forEach(k=>state[k]=null);
+    idx = 0;
+    summary.classList.add('hidden');
+    document.getElementById('stepArea').classList.remove('hidden');
+    setBadge(riskBadge,'Status: In Progress');
+    renderStep();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
   // ====== EVENTS ======
   beginBtn.addEventListener('click', ()=>{
     landing.classList.add('hidden');
@@ -442,13 +530,11 @@ This file is fully self-contained and style-scoped to #ck-wizard.
     if(idx < protections.length-1){ idx++; renderStep(); }
     else finish();
   });
-
   markReview.addEventListener('click', ()=>{
-    state[protections[idx].id] = 'reviewed'; // counts as NOT enabled for risk; user can come back
+    state[protections[idx].id] = 'reviewed'; // does NOT count as enabled for risk
     if(idx < protections.length-1){ idx++; renderStep(); }
     else finish();
   });
-
   skip.addEventListener('click', ()=>{
     state[protections[idx].id] = 'skipped';
     if(idx < protections.length-1){ idx++; renderStep(); }
@@ -459,10 +545,24 @@ This file is fully self-contained and style-scoped to #ck-wizard.
     if(idx>0){ idx--; renderStep(); }
   });
 
-  next.addEventListener('click', ()=>{
-    if(idx<protections.length-1){ idx++; renderStep(); }
+  // Drawer controls
+  openDrawer.addEventListener('click', ()=>{
+    renderDrawerList();
+    drawer.classList.add('open');
+    drawerMask.classList.add('open');
+  });
+  closeDrawer.addEventListener('click', ()=>{
+    drawer.classList.remove('open');
+    drawerMask.classList.remove('open');
+  });
+  drawerMask.addEventListener('click', ()=>{
+    drawer.classList.remove('open');
+    drawerMask.classList.remove('open');
   });
 
+  resetAudit.addEventListener('click', resetAll);
+
+  // Summary actions
   copyReport.addEventListener('click', async ()=>{
     try {
       await navigator.clipboard.writeText(reportOut.value);
@@ -473,15 +573,7 @@ This file is fully self-contained and style-scoped to #ck-wizard.
     }
   });
 
-  restart.addEventListener('click', ()=>{
-    Object.keys(state).forEach(k=>state[k]=null);
-    idx = 0;
-    summary.classList.add('hidden');
-    document.getElementById('stepArea').classList.remove('hidden');
-    setBadge(riskBadge,'Status: In Progress');
-    renderStep();
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
+  restart.addEventListener('click', resetAll);
 
 })();
 </script>
