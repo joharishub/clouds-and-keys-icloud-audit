@@ -198,11 +198,11 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     // Account Protection (includes Safety Check)
     { id:"emails",     sev:"critical", cat:"Account Protection", title:"Emails & Phone Numbers",
       why:"Keeps your sign-in and recovery info current so you don’t miss alerts or lose access.",
-      action:"Settings → [your name] → Sign-In & Security → Account Information."
+      action:"Settings → [your name] → Sign-In & Security → Verify Emails & Phone Numbers."
     },
     { id:"twofa",      sev:"critical", cat:"Account Protection", title:"Two-Factor Authentication & Trusted Devices",
       why:"Blocks password-only logins and ensures only your devices receive verification codes.",
-      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication (verify trusted number & device list)."
+      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Verify trusted number & device list."
     },
     { id:"rkey",       sev:"critical", cat:"Account Protection", title:"Recovery Key",
       why:"Master key to regain access; essential with Advanced Data Protection.",
@@ -236,19 +236,19 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     },
     { id:"backup",     sev:"critical", cat:"Device Protection", title:"iCloud Backup",
       why:"Ensures you can restore your data after loss, theft, or damage.",
-      action:"Settings → [your name] → iCloud → iCloud Backup → Back Up This iPhone → On, then Back Up Now."
+      action:"Settings → [your name] → iCloud → iCloud Backup → Back Up This iPhone → On, then select Back Up Now."
     },
     { id:"findmy",     sev:"critical", cat:"Device Protection", title:"Find My iPhone",
       why:"Lets you locate and lock a lost/stolen device so it can’t be reused.",
-      action:"Settings → [your name] → Find My → Find My iPhone → On, Find My network On, Send Last Location On."
+      action:"Settings → [your name] → Find My → Find My iPhone → On, Find My network → On, Send Last Location → On."
     },
     { id:"erase10",    sev:"critical", cat:"Device Protection", title:"Erase Data after 10 Failed Attempts",
       why:"Stops brute-force passcode guessing by wiping data after too many failures.",
       action:"Settings → Face ID & Passcode → Erase Data → On."
     },
-    { id:"updates",    sev:"critical", cat:"Device Protection", title:"Software Update (Automatic)",
+    { id:"updates",    sev:"critical", cat:"Device Protection", title:"Software Update",
       why:"Installs the latest security patches quickly to close known vulnerabilities.",
-      action:"Settings → General → Software Update → Automatic Updates → Automatically Install."
+      action:"Settings → General → Software Update → Automatic Updates → Automatically Install → On."
     },
     { id:"stolen",     sev:"high",     cat:"Device Protection", title:"Stolen Device Protection",
       why:"Blocks sensitive account changes even if a thief knows your passcode.",
@@ -258,27 +258,27 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
       why:"Prevents unlock while you’re asleep or not looking at the device.",
       action:"Settings → Face ID & Passcode → Require Attention for Face ID → On."
     },
-    { id:"wired",      sev:"high",     cat:"Device Protection", title:"Wired Accessories (USB when locked)",
+    { id:"wired",      sev:"high",     cat:"Device Protection", title:"Wired Accessories",
       why:"Blocks data access over Lightning/USB while the device is locked.",
-      action:"Settings → Face ID & Passcode → USB Accessories → Off."
+      action:"Settings → Privacy & Security → Wired Accessories → Ask for New Accessories."
     },
-    { id:"vpnmdm",     sev:"high",     cat:"Device Protection", title:"VPN & Device Management (Profiles)",
+    { id:"vpnmdm",     sev:"high",     cat:"Device Protection", title:"VPN & Device Management",
       why:"Ensures no unauthorized configuration or management profiles control your iPhone.",
       action:"Settings → General → VPN & Device Management → Remove unfamiliar profiles."
     },
 
     // Safe Browsing & Communication
-    { id:"fraudWarn",  sev:"high",     cat:"Safe Browsing & Communication", title:"Fraudulent Website Warning (Safari)",
+    { id:"fraudWarn",  sev:"high",     cat:"Safe Browsing & Communication", title:"Fraudulent Website Warning",
       why:"Warns about known phishing or malicious sites.",
-      action:"Settings → Safari → Privacy & Security → Fraudulent Website Warning → On."
+      action:"Settings → Apps → Safari → Privacy & Security → Fraudulent Website Warning → On."
     },
-    { id:"notSecure",  sev:"low",      cat:"Safe Browsing & Communication", title:"Not Secure Connection Warning (Safari)",
+    { id:"notSecure",  sev:"low",      cat:"Safe Browsing & Communication", title:"Not Secure Connection Warning",
       why:"Alerts on unencrypted web pages to reduce credential exposure.",
-      action:"Settings → Safari → Privacy & Security → Show Not Secure Warnings → On."
+      action:"Settings → Apps → Safari → Privacy & Security → Not Secure Connection Warning → On."
     },
-    { id:"ckv",        sev:"low",      cat:"Safe Browsing & Communication", title:"Contact Key Verification (CKV)",
+    { id:"ckv",        sev:"low",      cat:"Safe Browsing & Communication", title:"Contact Key Verification",
       why:"Confirms iMessage/FaceTime sessions with trusted contacts are authentic.",
-      action:"Settings → [your name] → Contact Key Verification → On."
+      action:"Settings → [your name] → Contact Key Verification → Verification in iMessage → On."
     }
   ];
 
