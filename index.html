@@ -91,23 +91,21 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
   <div class="wrap">
     <!-- LANDING -->
     <div id="landing" class="card" style="text-align:center;">
-  <h1>Guided iCloud Security Audit</h1>
-  <p class="muted">
-    This guided audit walks you through the most important iCloud and iPhone protections — one at a time. 
-    Mark each step as <strong>Enabled</strong> or <strong>Reviewed</strong>. 
-    At the end, you’ll receive a clean summary and your risk badge.
-  </p>
-  <button id="beginBtn" class="btn btn-primary">Begin Audit</button>
-</div>
+      <h1>Guided iCloud Security Audit</h1>
+      <p class="muted">
+        You’ll go through each major iCloud and iPhone protection, one at a time. Mark every step as <strong>Enabled</strong> if it matches your current settings, or <strong>Reviewed</strong> if it does not. At the end, you’ll receive an audit summary and risk level.
+      </p>
+      <button id="beginBtn" class="btn btn-primary">Begin Audit</button>
+    </div>
 
     <!-- WIZARD -->
     <div id="wizard" class="card hidden">
       <div class="topbar">
         <div style="flex:1 1 380px; min-width:260px;">
-          <div id="phaseBadge" 
-     style="font-weight:600; color:#444; background:#f5f5f5; padding:6px 12px; border-radius:8px; display:inline-block;">
-  Audit in Progress
-</div>
+            <div id="phaseBadge"
+                 style="font-weight:600; color:#444; background:#f5f5f5; padding:6px 12px; border-radius:8px; display:inline-block;">
+              Audit in Progress
+            </div>
           <div class="legend">
             <span><i class="dot green"></i> Enabled</span>
             <span><i class="dot amber"></i> Reviewed</span>
@@ -126,7 +124,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
         <h3 id="stepTitle"></h3>
         <p class="muted" id="stepPath" style="margin-top:-4px;"></p>
         <div class="why"><strong>Why it matters:</strong><p id="why"></p></div>
-        <div class="action"><strong>Action:</strong><p id="action"></p></div>
+        <div class="action"><strong>Steps:</strong><p id="action"></p></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button id="markEnabled" class="btn btn-primary">Mark as Enabled</button>
           <button id="markReviewed" class="btn btn-secondary">Mark as Reviewed</button>
@@ -150,6 +148,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
       <!-- Summary -->
       <div id="summary" class="hidden" style="margin-top:16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+          <span id="phaseComplete" class="badge minimal">Audit Complete</span>
         </div>
         <h1 style="margin-top:16px;">Audit Summary</h1>
         <p>Your iCloud Security Badge:</p>
@@ -197,50 +196,50 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
   const protections = [
     // Account Protection (includes Safety Check)
     { id:"emails",     sev:"critical", cat:"Account Protection", title:"Emails & Phone Numbers",
-      why:"Keeps your sign-in and recovery info current so you don’t miss alerts or lose access.",
-      action:"Settings → [your name] → Sign-In & Security → Verify Emails & Phone Numbers."
+      why:"Keep your sign-in and recovery info current so you don’t miss alerts or lose access.",
+      action:"Settings → [your name] → Sign-In & Security → Verify Emails and Phone Numbers."
     },
     { id:"twofa",      sev:"critical", cat:"Account Protection", title:"Two-Factor Authentication & Trusted Devices",
-      why:"Blocks password-only logins and ensures only your devices receive verification codes.",
-      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Verify trusted number & device list."
+      why:"Stops an attacker that has your password and ensures only your devices receive verification codes.",
+      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → ON + Verify Trusted Phone Numbers and Devices."
     },
     { id:"rkey",       sev:"critical", cat:"Account Protection", title:"Recovery Key",
-      why:"Master key to regain access; essential with Advanced Data Protection.",
+      why:"If you lose your password or trusted device, use a recovery key to reset your password and regain access.",
       action:"Settings → [your name] → Sign-In & Security → Recovery Key → On / Create New."
     },
     { id:"adp",        sev:"high",     cat:"Account Protection", title:"Advanced Data Protection",
-      why:"End-to-end encrypts most iCloud data so only you can access it.",
+      why:"Protected data can only be decrypted on your trusted devices, stopping attackers and even Apple from gaining access.",
       action:"Settings → [your name] → iCloud → Advanced Data Protection → On."
     },
     { id:"keys",       sev:"high",     cat:"Account Protection", title:"Security Keys",
-      why:"Phishing-resistant login with no fallbacks; reduces takeover risk dramatically.",
-      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Security Keys → Add."
+      why:"An advanced security feature for those who want the best protection from targeted phishing attacks or social engineering scams. (Requires a pair of Security Keys)",
+      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Security Keys → Add Security Keys."
     },
-    { id:"webOff",     sev:"high",     cat:"Account Protection", title:"Access iCloud Data on the Web — OFF",
-      why:"Reduces attack surface from browser-based access and phishing.",
+    { id:"webOff",     sev:"high",     cat:"Account Protection", title:"Access iCloud Data on the Web",
+      why:"Removes the ability to login to iCloud.com, which reduces browser-based attacks and phishing.",
       action:"Settings → [your name] → iCloud → Access iCloud Data on the Web → Off (enable only when needed)."
     },
     { id:"rcontacts",  sev:"high",     cat:"Account Protection", title:"Recovery Contacts",
-      why:"Trusted people can help you recover your account if locked out.",
-      action:"Settings → [your name] → Sign-In & Security → Recovery Methods → Recovery Contacts → Add."
+      why:"Trusted people can help recover your account if you get locked out.",
+      action:"Settings → [your name] → Sign-In & Security → Recovery Methods → Recovery Contacts → Add Recovery Contact."
     },
     { id:"safety",     sev:"high",     cat:"Account Protection", title:"Safety Check",
-      why:"Quickly reset or review sharing and access in emergencies or after risk events.",
-      action:"Settings → Privacy & Security → Safety Check → Manage Sharing & Access (or Emergency Reset)."
+      why:"Quickly review or reset information you share with people, apps, and devices.",
+      action:"Settings → Privacy & Security → Safety Check → Manage Sharing & Access / Emergency Reset."
     },
 
     // Device Protection
     { id:"passcode",   sev:"critical", cat:"Device Protection", title:"Require Passcode",
-      why:"Core of iPhone encryption — without it, anyone with your phone can read your data.",
+      why:"This is the core of iPhone encryption and without it, anyone with your phone can access your data and settings.",
       action:"Settings → Face ID & Passcode → Require Passcode → Immediately."
     },
     { id:"backup",     sev:"critical", cat:"Device Protection", title:"iCloud Backup",
       why:"Ensures you can restore your data after loss, theft, or damage.",
-      action:"Settings → [your name] → iCloud → iCloud Backup → Back Up This iPhone → On, then select Back Up Now."
+      action:"Settings → [your name] → iCloud → iCloud Backup → Back Up This iPhone → On."
     },
     { id:"findmy",     sev:"critical", cat:"Device Protection", title:"Find My iPhone",
-      why:"Lets you locate and lock a lost/stolen device so it can’t be reused.",
-      action:"Settings → [your name] → Find My → Find My iPhone → On, Find My network → On, Send Last Location → On."
+      why:"Lets you locate, lock or wipe a lost/stolen device.",
+      action:"Settings → [your name] → Find My → Find My iPhone → On, Find My network On, Send Last Location On."
     },
     { id:"erase10",    sev:"critical", cat:"Device Protection", title:"Erase Data after 10 Failed Attempts",
       why:"Stops brute-force passcode guessing by wiping data after too many failures.",
@@ -248,10 +247,10 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     },
     { id:"updates",    sev:"critical", cat:"Device Protection", title:"Software Update",
       why:"Installs the latest security patches quickly to close known vulnerabilities.",
-      action:"Settings → General → Software Update → Automatic Updates → Automatically Install → On."
+      action:"Settings → General → Software Update → Automatic Updates → Automatically Install."
     },
     { id:"stolen",     sev:"high",     cat:"Device Protection", title:"Stolen Device Protection",
-      why:"Blocks sensitive account changes even if a thief knows your passcode.",
+      why:"Blocks sensitive device and account changes even if a thief knows your passcode.",
       action:"Settings → Face ID & Passcode → Stolen Device Protection → On."
     },
     { id:"attention",  sev:"high",     cat:"Device Protection", title:"Require Attention for Face ID",
@@ -259,7 +258,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
       action:"Settings → Face ID & Passcode → Require Attention for Face ID → On."
     },
     { id:"wired",      sev:"high",     cat:"Device Protection", title:"Wired Accessories",
-      why:"Blocks data access over Lightning/USB while the device is locked.",
+      why:"Prevents unauthorized device access over USB to unknown devices.",
       action:"Settings → Privacy & Security → Wired Accessories → Ask for New Accessories."
     },
     { id:"vpnmdm",     sev:"high",     cat:"Device Protection", title:"VPN & Device Management",
@@ -270,15 +269,15 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     // Safe Browsing & Communication
     { id:"fraudWarn",  sev:"high",     cat:"Safe Browsing & Communication", title:"Fraudulent Website Warning",
       why:"Warns about known phishing or malicious sites.",
-      action:"Settings → Apps → Safari → Privacy & Security → Fraudulent Website Warning → On."
+      action:"Settings → Safari → Privacy & Security → Fraudulent Website Warning → On."
     },
     { id:"notSecure",  sev:"low",      cat:"Safe Browsing & Communication", title:"Not Secure Connection Warning",
-      why:"Alerts on unencrypted web pages to reduce credential exposure.",
-      action:"Settings → Apps → Safari → Privacy & Security → Not Secure Connection Warning → On."
+      why:"Alerts on unencrypted web pages to reduce phishing and credential exposure.",
+      action:"Settings → Safari → Privacy & Security → Show Not Secure Warnings → On."
     },
     { id:"ckv",        sev:"low",      cat:"Safe Browsing & Communication", title:"Contact Key Verification",
-      why:"Confirms iMessage/FaceTime sessions with trusted contacts are authentic.",
-      action:"Settings → [your name] → Contact Key Verification → Verification in iMessage → On."
+      why:"Confirms secure iMessage/FaceTime sessions with an alert if a trusted contact cannot be verified.",
+      action:"Settings → [your name] → Contact Key Verification → On."
     }
   ];
 
@@ -405,35 +404,27 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
   }
 
   // Wizard rendering
-  function showStep() {
-  if (idx >= protections.length) {
-    // Done with steps → confirm screen
-    stepArea.classList.add('hidden');
-    confirmView.classList.remove('hidden');
-    phaseBadge.textContent = 'Audit Complete';
-    phaseBadge.style.color = '#2b7a0b';
-    phaseBadge.style.background = '#e8f5e9';
+  function showStep(){
+    if (idx >= protections.length){
+      // Done with steps → confirm screen
+      stepArea.classList.add('hidden');
+      confirmView.classList.remove('hidden');
+      phaseBadge.textContent = 'Audit in Progress'; // remains neutral until summary
+      updateProgressUI();
+      return;
+    }
+    confirmView.classList.add('hidden');
+    stepArea.classList.remove('hidden');
+
+    const p = protections[idx];
+    stepTitle.textContent = p.title;
+    stepPath.textContent = `${p.cat} • ${p.sev.charAt(0).toUpperCase() + p.sev.slice(1)}`;
+    whyEl.textContent     = p.why;
+    actionEl.textContent  = p.action;
+
+    back.disabled = (idx === 0);
     updateProgressUI();
-    return;
   }
-
-  confirmView.classList.add('hidden');
-  stepArea.classList.remove('hidden');
-  const p = protections[idx];
-  stepTitle.textContent = p.title;
-  stepPath.textContent = `${p.cat} • ${p.sev.charAt(0).toUpperCase() + p.sev.slice(1)}`;
-  whyEl.textContent = p.why;
-  actionEl.textContent = p.action;
-  sevNote.textContent = `${p.cat}`;
-  back.disabled = (idx === 0);
-  
-  // Mid-progress style
-  phaseBadge.textContent = 'Audit in Progress';
-  phaseBadge.style.color = '#444';
-  phaseBadge.style.background = '#f5f5f5';
-
-  updateProgressUI();
-}
 
   function showSummary(){
     // Build lists
@@ -448,6 +439,9 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     setRiskBadge(riskBadge, level);
 
     // Top state badge
+    phaseBadge.classList.add('hidden');
+    phaseComplete.classList.remove('hidden');
+    phaseComplete.textContent = 'Audit Complete';
 
     // Hide drawer affordances on summary
     openDrawer.classList.add('hidden');
