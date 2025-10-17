@@ -333,7 +333,13 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
   // Helpers
   function computeRiskSoFar(){
     const missingCritical = protections.filter(p => p.sev === 'critical' && state[p.id] !== 'enabled');
-    const missingHigh = protections.filter(p => p.sev === 'high' && state[p.id] !== 'enabled');
+    
+    // Exclude optional high-impact items from risk penalty
+    const excludedHigh = ['keys', 'rcontacts'];
+    const missingHigh = protections.filter(
+      p => p.sev === 'high' && !excludedHigh.includes(p.id) && state[p.id] !== 'enabled'
+    );
+
     if (missingCritical.length > 0) return 'High Risk';
     if (missingHigh.length >= 2) return 'Low Risk';
     return 'Minimal Risk';
@@ -345,6 +351,12 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     else if (level === 'Low Risk') el.classList.add('low');
     else if (level === 'Minimal Risk') el.classList.add('minimal');
     else el.classList.add('neutral');
+    
+    // Make rectangular, consistent with Audit Complete
+      el.style.borderRadius = '8px';
+      el.style.padding = '6px 12px';
+      el.style.fontWeight = '600';
+      el.style.display = 'inline-block';
     el.textContent = level;
   }
 
@@ -442,6 +454,14 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     phaseBadge.classList.add('hidden');
     phaseComplete.classList.remove('hidden');
     phaseComplete.textContent = 'Audit Complete';
+    phaseComplete.classList.remove('minimal','low','high');
+    phaseComplete.style.color = '#444';
+    phaseComplete.style.background = '#f5f5f5';
+    phaseComplete.style.border = '1px solid #E5E7EB';
+    phaseComplete.style.borderRadius = '8px';
+    phaseComplete.style.padding = '6px 12px';
+    phaseComplete.style.fontWeight = '600';
+    phaseComplete.style.display = 'inline-block';
 
     // Hide drawer affordances on summary
     openDrawer.classList.add('hidden');
