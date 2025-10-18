@@ -110,7 +110,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
             </div>
           <div class="legend">
             <span><i class="dot green"></i> Enabled</span>
-            <span><i class="dot amber"></i> Reviewed</span>
+            <span><i class="dot amber"></i> Needs Review</span>
             <span><i class="dot gray"></i> Skipped</span>
           </div>
           <div class="progress" style="margin-top:8px;"><i id="bar"></i></div>
@@ -129,7 +129,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
         <div class="action"><strong>Steps:</strong><p id="action"></p></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button id="markEnabled" class="btn btn-primary">Mark as Enabled</button>
-          <button id="markReviewed" class="btn btn-secondary">Mark as Reviewed</button>
+          <button id="markReviewed" class="btn btn-secondary">Needs Review</button>
           <button id="skip" class="btn btn-ghost">Skip</button>
         </div>
         <div class="foot">
@@ -161,7 +161,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
           <ul id="enabledList"></ul>
         </div>
         <div class="card" style="margin-top:12px;">
-          <h3>Missing / To Review</h3>
+          <h3>Needs Review / Skipped</h3>
           <ul id="missingList"></ul>
         </div>
 
@@ -375,7 +375,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     const enabled = Object.values(state).filter(v => v === 'enabled').length;
     const reviewed = Object.values(state).filter(v => v === 'reviewed').length;
     const skipped = Object.values(state).filter(v => v === 'skipped').length;
-    drawerCounts.textContent = `Enabled ${enabled} • Reviewed ${reviewed} • Skipped ${skipped}`;
+    drawerCounts.textContent = `Enabled ${enabled} • Needs Review ${reviewed} • Skipped ${skipped}`;
 
     // Risk so far
     const level = computeRiskSoFar();
@@ -528,7 +528,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
       'Enabled Protections:',
       enabled.length ? '• ' + enabled.join('\n• ') : '• (None)',
       '',
-      'Missing / To Review:',
+      'Needs Review / Skipped:',
       missing.length ? '• ' + missing.join('\n• ') : '• (None) — All protections verified.'
     ].join('\n');
 
