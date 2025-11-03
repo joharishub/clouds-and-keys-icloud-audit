@@ -221,7 +221,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
       why:"Removes the ability to login to iCloud.com, which reduces browser-based attacks and phishing.",
       action:"Settings → [your name] → iCloud → Access iCloud Data on the Web → Off (enable only when needed)."
     },
-    { id:"rcontacts",  sev:"high",     cat:"Account Protection", title:"Recovery Contacts",
+    { id:"rcontacts",  sev:"low",     cat:"Account Protection", title:"Recovery Contacts",
       why:"Trusted people can help recover your account if you get locked out.",
       action:"Settings → [your name] → Sign-In & Security → Recovery Methods → Recovery Contacts → Add Recovery Contact."
     },
@@ -259,6 +259,14 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
       why:"Prevents unlock while you’re asleep or not looking at the device.",
       action:"Settings → Face ID & Passcode → Require Attention for Face ID → On."
     },
+    { id:"airdrop", sev:"high", cat:"Device Protection", title:"AirDrop",
+      why:"Prevents malicious or unwanted wireless file transfer prompts.",
+      action:"Settings → General → AirDrop → Receiving Off or Contacts Only."
+    },
+    { id:"bringTogether", sev:"low", cat:"Device Protection", title:"Bringing Devices Together",
+      why:"Prevents your iPhone from sharing information when it’s held near another device.",
+      action:"Settings → General → AirDrop → Bringing Devices Together → Off (turn it on only when you’re sharing or setting up a device)."
+    },
     { id:"wired",      sev:"high",     cat:"Device Protection", title:"Wired Accessories",
       why:"Prevents unauthorized device access over USB to unknown devices.",
       action:"Settings → Privacy & Security → Wired Accessories → Ask for New Accessories."
@@ -269,7 +277,7 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
     },
 
     // Safe Browsing & Communication
-    { id:"fraudWarn",  sev:"high",     cat:"Safe Browsing & Communication", title:"Fraudulent Website Warning",
+    { id:"fraudWarn",  sev:"low",     cat:"Safe Browsing & Communication", title:"Fraudulent Website Warning",
       why:"Warns about known phishing or malicious sites.",
       action:"Settings → Safari → Privacy & Security → Fraudulent Website Warning → On."
     },
@@ -333,18 +341,32 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
   const drawerList = document.getElementById('drawerList');
 
   // Helpers
-  function computeRiskSoFar(){
+  function computeRiskSoFar() {
     const missingCritical = protections.filter(p => p.sev === 'critical' && state[p.id] !== 'enabled');
-    
-    // Exclude optional high-impact items from risk penalty
-    const excludedHigh = ['keys', 'rcontacts'];
-    const missingHigh = protections.filter(
-      p => p.sev === 'high' && !excludedHigh.includes(p.id) && state[p.id] !== 'enabled'
+    const missingExploitSurface = protections.filter(p =>
+      ['webOff', 'airdrop'].includes(p.id) && state[p.id] !== 'enabled'
     );
+    const missingProximity = protections.filter(p =>
+      ['bringTogether'].includes(p.id) && state[p.id] !== 'enabled'
+    );
+    const missingEnhancements = protections.filter(p =>
+      ['adp', 'rcontacts', 'safety', 'attention'].includes(p.id) && state[p.id] !== 'enabled'
+    );
+    const hasSecurityKeys = state['keys'] === 'enabled';
 
-    if (missingCritical.length > 0) return 'High Risk';
-    if (missingHigh.length >= 2) return 'Low Risk';
-    return 'Minimal Risk';
+    let level = 'Minimal Risk';
+
+    if (missingCritical.length > 0 || missingExploitSurface.length > 0) {
+      level = 'High Risk';
+    } else if (missingProximity.length > 0 || missingEnhancements.length >= 3) {
+      level = 'Low Risk';
+  }
+
+    // Security Keys reduce risk by one tier if enabled
+    if (hasSecurityKeys && level === 'High Risk') level = 'Low Risk';
+    else if (hasSecurityKeys && level === 'Low Risk') level = 'Minimal Risk';
+
+    return level;
   }
 
   function setRiskBadge(el, level){
