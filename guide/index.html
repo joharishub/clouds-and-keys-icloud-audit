@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clouds & Keys — iPhone & iCloud Security Guide (Wizard)</title>
+  <meta name="description" content="A step-by-step interactive guide to the 22 essential iPhone & iCloud security settings, with photos and plain‑English explanations." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fade-enter { opacity: 0; transform: translateY(8px); }
+    .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity .25s ease, transform .25s ease; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <p id="progress" class="text-sm text-gray-500 mb-4">Step 1 of 22</p>
+    
+    <!-- Card -->
+    <section id="card" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+      <div id="stepContent" class="fade-enter fade-enter-active"></div>
+
+      <div class="mt-6 flex items-center justify-between">
+        <button id="prevBtn" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 disabled:opacity-40" aria-label="Previous">Back</button>
+        <div class="flex items-center gap-3">
+          <button id="nextBtn" class="px-4 py-2 rounded-lg bg-blue-600 text-white" aria-label="Next">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer note -->
+    <p class="text-center text-xs text-gray-500 mt-6">Photos are illustrative. Menu names may vary by iOS version.</p>
+  </main>
+
+<script>
+// === DATA: 22 Steps (only mark Critical where applicable) ===
+// Image filenames are placeholders — replace with your actual photos under /images/
+const steps = [
+  {
+    title: "Emails & Phone Numbers",
+    severity: "Critical",
+    img: "images/01.png",
+    desc: "Keeping your Apple ID contact information up to date ensures you can recover your account if you ever get locked out. Recovery messages and verification codes depend on these addresses and numbers being current. It’s a simple but essential safeguard for maintaining continuous access.",
+    path: "Settings → [your name] → Sign-In & Security → Verify Emails & Phone Numbers"
+  },
+  {
+    title: "Two-Factor Authentication & Trusted Devices",
+    severity: "Critical",
+    img: "images/02.png",
+    desc: "Two-factor authentication makes it nearly impossible for someone to sign in without your approval, even if they know your password. Only devices you trust can receive verification codes. This extra layer of identity proof keeps your account secure during logins and password resets.",
+    path: "Settings → [your name] → Sign-In & Security → Two-Factor Authentication"
+  },
+  {
+    title: "Recovery Key",
+    severity: "Critical",
+    img: "images/03.png",
+    desc: "A recovery key is your personal master key to regain access to your Apple ID if you lose your password or trusted devices. It replaces Apple’s fallback recovery process, giving you full control. Keeping a printed copy stored safely ensures you’ll never lose access to your data.",
+    path: "Settings → [your name] → Sign-In & Security → Recovery Key"
+  },
+  {
+    title: "Advanced Data Protection",
+    severity: "",
+    img: "images/04.png",
+    desc: "Advanced Data Protection upgrades iCloud to end-to-end encryption for most data categories, including backups, Photos, and Notes. Only your trusted devices hold the keys. Even Apple cannot access your protected data, giving you the highest level of privacy Apple offers.",
+    path: "Settings → [your name] → iCloud → Advanced Data Protection"
+  },
+  {
+    title: "Security Keys",
+    severity: "",
+    img: "images/05.png",
+    desc: "Security keys replace verification codes with a physical hardware token, protecting your Apple ID from phishing and fake login pages. Without the key, no one can access your account, not even with your password. This is the most secure form of sign-in Apple supports.",
+    path: "Settings → [your name] → Sign-In & Security → Security Keys"
+  },
+  {
+    title: "Access iCloud Data on the Web",
+    severity: "",
+    img: "images/06.png",
+    desc: "Disabling access to iCloud data through a browser minimizes the number of places your information can be reached. It prevents login attempts from unfamiliar devices or public computers. Keep this off unless you have a specific reason to use iCloud.com regularly.",
+    path: "Settings → [your name] → iCloud → Access iCloud Data on the Web → Off"
+  },
+  {
+    title: "Recovery Contacts",
+    severity: "",
+    img: "images/07.png",
+    desc: "Recovery contacts are trusted people you choose to help you regain access if you ever get locked out of your account. They can verify your identity to Apple without accessing your data. It’s a low-effort way to add a human safety net to your Apple ID.",
+    path: "Settings → [your name] → Account Recovery → Add Recovery Contact"
+  },
+  {
+    title: "Safety Check",
+    severity: "Critical",
+    img: "images/08.png",
+    desc: "Safety Check provides an emergency reset for privacy and sharing. It instantly stops location sharing, removes shared accounts, and reviews app access. It’s a vital feature for anyone leaving a risky situation or needing to reestablish personal control.",
+    path: "Settings → Privacy & Security → Safety Check"
+  },
+  {
+    title: "Require Passcode",
+    severity: "Critical",
+    img: "images/09.png",
+    desc: "Your passcode is the foundation of iPhone encryption. It locks your device, encrypts stored data, and prevents anyone else from accessing your information. Without it, nearly every protection on your device is weakened or disabled.",
+    path: "Settings → Face ID & Passcode → Turn on Passcode"
+  },
+  {
+    title: "iCloud Backup",
+    severity: "Critical",
+    img: "images/10.png",
+    desc: "Regular iCloud backups ensure your data is safely stored and can be restored after a loss, theft, or device replacement. This protection covers photos, messages, app data, and system settings. It turns a potential disaster into a recoverable event.",
+    path: "Settings → [your name] → iCloud → iCloud Backup"
+  },
+  {
+    title: "Find My iPhone",
+    severity: "Critical",
+    img: "images/11.png",
+    desc: "Find My iPhone lets you locate, lock, or erase your device if it’s ever lost or stolen. It also prevents others from activating your device without your permission. This single feature often determines whether your data remains private or ends up exposed.",
+    path: "Settings → [your name] → Find My → Find My iPhone"
+  },
+  {
+    title: "Erase Data after 10 Failed Attempts",
+    severity: "Critical",
+    img: "images/12.png",
+    desc: "Enabling this setting automatically erases all local data if ten incorrect passcodes are entered. It stops brute-force guessing attacks that try to unlock your phone. It’s a strong deterrent that protects your most personal information if your device is stolen.",
+    path: "Settings → Face ID & Passcode → Toggle “Erase Data”"
+  },
+  {
+    title: "Software Updates",
+    severity: "Critical",
+    img: "images/13.png",
+    desc: "Keeping software up to date ensures your iPhone has the latest security patches from Apple. Most attacks target known vulnerabilities that updates quickly fix. Automatic updates close those gaps without requiring constant manual checks.",
+    path: "Settings → General → Software Update → Automatic Updates → Turn on “Automatically Install”"
+  },
+  {
+    title: "Stolen Device Protection",
+    severity: "",
+    img: "images/14.png",
+    desc: "Stolen Device Protection adds new safeguards when your iPhone is away from familiar locations. It requires Face ID or Touch ID, and sometimes a waiting period, before sensitive changes can be made. Even if someone knows your passcode, they can’t disable key protections.",
+    path: "Settings → Face ID & Passcode → Stolen Device Protection"
+  },
+  {
+    title: "Require Attention for Face ID",
+    severity: "",
+    img: "images/15.png",
+    desc: "Requiring attention ensures your iPhone only unlocks when you are consciously looking at it. This prevents unlock attempts while you’re asleep or unaware. It’s a simple step that adds personal control to biometric security.",
+    path: "Settings → Face ID & Passcode → Require Attention"
+  },
+  {
+    title: "AirDrop",
+    severity: "",
+    img: "images/16.png",
+    desc: "Setting AirDrop to “Off” keeps random people nearby from sending you files or requests. This simple change reduces exposure to spam, pranks, and possible data injection attempts.",
+    path: "Settings → General → AirDrop → Receiving Off or Contacts Only"
+  },
+  {
+    title: "Bringing Devices Together",
+    severity: "",
+    img: "images/17.png",
+    desc: "Bringing Devices Together lets your iPhone and other Apple devices unlock or connect automatically when they’re close to each other. It’s convenient but should only be used around devices you own or trust. Turn it on only when you’re sharing or setting up a device.",
+    path: "Settings → General → AirDrop → Bringing Devices Together → Off"
+  },
+  {
+    title: "Wired Accessories",
+    severity: "",
+    img: "images/18.png",
+    desc: "Limiting USB accessory access while locked prevents data connections from unknown devices. This blocks forensic tools and malicious chargers from reading data through the Lightning or USB-C port. It’s a discreet but effective layer against physical access threats.",
+    path: "Settings → Privacy & Security → Wired Accessories → Ask for New Accessories"
+  },
+  {
+    title: "VPN & Device Management Review",
+    severity: "",
+    img: "images/19.png",
+    desc: "Reviewing VPN and device management settings ensures no hidden profiles or certificates control your network traffic or device policies. These settings are common entry points for corporate or malicious oversight. Regular review keeps your device’s configuration fully under your control.",
+    path: "Settings → General → VPN & Device Management → Remove unfamiliar profiles"
+  },
+  {
+    title: "Fraudulent Website Warning",
+    severity: "",
+    img: "images/20.png",
+    desc: "Safari’s Fraudulent Website Warning alerts you before visiting known phishing or malicious sites. It uses real-time threat data from Apple and Google to block deceptive web pages. This prevents you from entering passwords or information into fake login portals.",
+    path: "Settings → Safari → Privacy & Security → Fraudulent Website Warning → On"
+  },
+  {
+    title: "Not Secure Connection Warning",
+    severity: "",
+    img: "images/21.png",
+    desc: "When Safari shows a “Not Secure” label, it’s warning you that the page doesn’t use encryption. Any data entered there could be intercepted or modified. Paying attention to this alert protects your credentials and privacy during everyday browsing.",
+    path: "Settings → Safari → Privacy & Security → Show Not Secure Warnings → On"
+  },
+  {
+    title: "Contact Key Verification",
+    severity: "",
+    img: "images/22.png",
+    desc: "Contact Key Verification adds a visible trust indicator to iMessage and FaceTime. It lets you confirm that you’re communicating with the right person, not an impersonator. For high-value or sensitive conversations, it provides additional peace of mind.",
+    path: "Settings → [your name] → iCloud → Contact Key Verification"
+  }
+];
+
+let i = 0;
+const stepEl = document.getElementById('stepContent');
+const progressEl = document.getElementById('progress');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+function render() {
+  const s = steps[i];
+  progressEl.textContent = `Step ${i+1} of ${steps.length}`;
+
+  stepEl.classList.remove('fade-enter-active');
+  stepEl.classList.add('fade-enter');
+  // Build severity line only if Critical
+  const sevLine = s.severity && s.severity.toLowerCase() === 'critical'
+    ? `<p class="text-sm font-medium text-red-600 mb-3">${s.severity}</p>`
+    : '';
+
+  stepEl.innerHTML = `
+    <div class="text-center">
+      <h2 class="text-xl font-semibold mb-1">${s.title}</h2>
+      ${sevLine}
+      <img src="${s.img}" alt="${s.title}" class="rounded-xl shadow-md mx-auto mb-4 max-h-[420px] object-contain" onerror="this.style.display='none'"/>
+      <p class="text-sm text-gray-700 mb-3">${s.desc}</p>
+      <p class="text-sm text-blue-600 font-medium mt-2">${s.path}</p>
+    </div>
+  `;
+  requestAnimationFrame(() => {
+    stepEl.classList.remove('fade-enter');
+    stepEl.classList.add('fade-enter-active');
+  });
+
+  prevBtn.disabled = i === 0;
+  nextBtn.textContent = 'Next';
+}
+
+prevBtn.addEventListener('click', () => { if (i>0) { i--; render(); }});
+nextBtn.addEventListener('click', () => {
+  if (i < steps.length - 1) { i++; render(); }
+  else { /* Finish → restart */ i = 0; render(); }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  render();
+});
+</script>
+</body>
+</html>
