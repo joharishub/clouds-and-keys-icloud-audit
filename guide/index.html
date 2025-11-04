@@ -7,8 +7,20 @@
   <meta name="description" content="A step-by-step interactive guide to the 22 essential iPhone & iCloud security settings, with photos and plain‑English explanations." />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .fade-enter { opacity: 0; transform: translateY(8px); }
-    .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity .25s ease, transform .25s ease; }
+    .fade-enter {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    .fade-enter-active {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.4s ease;
+    }
+
+    /* Add this to smooth the card and image fade */
+    #stepContent {
+      transition: opacity 0.5s ease;
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -201,22 +213,28 @@ function render() {
   const s = steps[i];
   progressEl.textContent = `Step ${i+1} of ${steps.length}`;
 
-  stepEl.classList.remove('fade-enter-active');
-  stepEl.classList.add('fade-enter');
-  // Build severity line only if Critical
-  const sevLine = s.severity && s.severity.toLowerCase() === 'critical'
-    ? `<p class="text-sm font-medium text-red-600 mb-3">${s.severity}</p>`
-    : '';
+  // Fade out existing content
+  stepEl.style.opacity = 0;
 
-  stepEl.innerHTML = `
-    <div class="text-center">
-      <h2 class="text-xl font-semibold mb-1">${s.title}</h2>
-      ${sevLine}
-      <img src="${s.img}" alt="${s.title}" class="rounded-xl shadow-md mx-auto mb-4 max-h-[420px] object-contain" onerror="this.style.display='none'"/>
-      <p class="text-sm text-gray-700 mb-3">${s.desc}</p>
-      <p class="text-sm text-blue-600 font-medium mt-2">${s.path}</p>
-    </div>
-  `;
+  // Wait briefly, then swap content and fade back in
+  setTimeout(() => {
+    const sevLine = s.severity && s.severity.toLowerCase() === 'critical'
+      ? `<p class="text-sm font-medium text-red-600 mb-3">${s.severity}</p>`
+      : '';
+
+    const newContent = `
+      <div class="text-center">
+        <h2 class="text-xl font-semibold mb-1">${s.title}</h2>
+        ${sevLine}
+        <img src="${s.img}" alt="${s.title}" class="rounded-xl shadow-md mx-auto mb-4 max-h-[420px] object-contain" onerror="this.style.display='none'"/>
+        <p class="text-sm text-gray-700 mb-3">${s.desc}</p>
+        <p class="text-sm text-blue-600 font-medium mt-2">${s.path}</p>
+      </div>
+    `;
+
+    stepEl.innerHTML = newContent;
+    stepEl.style.opacity = 1;
+  }, 150);
   requestAnimationFrame(() => {
     stepEl.classList.remove('fade-enter');
     stepEl.classList.add('fade-enter-active');
