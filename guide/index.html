@@ -249,59 +249,59 @@ Merged: v14.6 audit logic + Guide v1 detailed text + images between details and 
     },
     { id:"twofa", sev:"critical", cat:"Account Protection", title:"Two-Factor Authentication & Trusted Devices",
       why:"Two-factor authentication makes it nearly impossible for someone to sign in without your approval, even if they know your password. Only devices you trust can receive verification codes. This extra layer of identity proof keeps your account secure during logins and password resets.",
-      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication",
+      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → ON + Verify Trusted Phone Numbers and Devices",
       img:"images/02.png"
     },
     { id:"rkey", sev:"critical", cat:"Account Protection", title:"Recovery Key",
-      why:"A recovery key is your personal master key to regain access to your Apple ID if you lose your password or trusted devices. It replaces Apple’s fallback recovery process, giving you full control. Keeping a printed copy stored safely ensures you’ll never lose access to your data.",
-      action:"Settings → [your name] → Sign-In & Security → Recovery Key",
+      why:"A recovery key is your personal master key to regain access to your Apple ID if you lose your password or trusted devices. Keeping a printed copy stored safely ensures you’ll never lose access to your data.",
+      action:"Settings → [your name] → Sign-In & Security → Recovery Key → On or Create New",
       img:"images/03.png"
     },
     { id:"adp", sev:"high", cat:"Account Protection", title:"Advanced Data Protection",
       why:"Advanced Data Protection upgrades iCloud to end-to-end encryption for most data categories, including backups, Photos, and Notes. Only your trusted devices hold the keys. Even Apple cannot access your protected data, giving you the highest level of privacy Apple offers.",
-      action:"Settings → [your name] → iCloud → Advanced Data Protection",
+      action:"Settings → [your name] → iCloud → Advanced Data Protection → On",
       img:"images/04.png"
     },
     { id:"keys", sev:"high", cat:"Account Protection", title:"Security Keys",
       why:"Security keys replace verification codes with a physical hardware token, protecting your Apple ID from phishing and fake login pages. Without the key, no one can access your account, not even with your password. This is the most secure form of sign-in Apple supports.",
-      action:"Settings → [your name] → Sign-In & Security → Security Keys",
+      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Security Keys → Add Security Keys",
       img:"images/05.png"
     },
     { id:"webOff", sev:"high", cat:"Account Protection", title:"Access iCloud Data on the Web",
       why:"Disabling access to iCloud data through a browser minimizes the number of places your information can be reached. It prevents login attempts from unfamiliar devices or public computers. Keep this off unless you have a specific reason to use iCloud.com regularly.",
-      action:"Settings → [your name] → iCloud → Access iCloud Data on the Web → Off",
+      action:"Settings → [your name] → iCloud → Access iCloud Data on the Web → Off (enable only when needed)",
       img:"images/06.png"
     },
     { id:"rcontacts", sev:"low", cat:"Account Protection", title:"Recovery Contacts",
       why:"Recovery contacts are trusted people you choose to help you regain access if you ever get locked out of your account. They can verify your identity to Apple without accessing your data. It’s a low-effort way to add a human safety net to your Apple ID.",
-      action:"Settings → [your name] → Account Recovery → Add Recovery Contact",
+      action:"Settings → [your name] → Sign-In & Security → Recovery Methods → Recovery Contacts → Add Recovery Contact",
       img:"images/07.png"
     },
     { id:"safety", sev:"high", cat:"Account Protection", title:"Safety Check",
-      why:"Safety Check provides an emergency reset for privacy and sharing. It instantly stops location sharing, removes shared accounts, and reviews app access. It’s a vital feature for anyone leaving a risky situation or needing to reestablish personal control.",
-      action:"Settings → Privacy & Security → Safety Check",
+      why:"Safety Check provides an emergency reset for privacy and sharing. It instantly stops location sharing, removes shared accounts, and reviews app access. It’s a vital feature for anyone needing to reestablish personal control.",
+      action:"Settings → Privacy & Security → Safety Check → Select Manage Sharing & Access (or Emergency Reset when urgent)",
       img:"images/08.png"
     },
 
     // Device Protection
     { id:"passcode", sev:"critical", cat:"Device Protection", title:"Require Passcode",
       why:"Your passcode is the foundation of iPhone encryption. It locks your device, encrypts stored data, and prevents anyone else from accessing your information. Without it, nearly every protection on your device is weakened or disabled.",
-      action:"Settings → Face ID & Passcode → Turn on Passcode",
+      action:"Settings → Face ID & Passcode → Require Passcode → Immediately",
       img:"images/09.png"
     },
     { id:"backup", sev:"critical", cat:"Device Protection", title:"iCloud Backup",
       why:"Regular iCloud backups ensure your data is safely stored and can be restored after a loss, theft, or device replacement. This protection covers photos, messages, app data, and system settings. It turns a potential disaster into a recoverable event.",
-      action:"Settings → [your name] → iCloud → iCloud Backup",
+      action:"Settings → [your name] → iCloud → iCloud Backup → Back Up This iPhone → On",
       img:"images/10.png"
     },
     { id:"findmy", sev:"critical", cat:"Device Protection", title:"Find My iPhone",
-      why:"Find My iPhone lets you locate, lock, or erase your device if it’s ever lost or stolen. It also prevents others from activating your device without your permission. This single feature often determines whether your data remains private or ends up exposed.",
-      action:"Settings → [your name] → Find My → Find My iPhone",
+      why:"Find My iPhone lets you locate, lock, or erase your device if it’s ever lost or stolen. This single feature often determines whether your data remains private or ends up exposed.",
+      action:"Settings → [your name] → Find My → Find My iPhone → Turn on Find My iPhone, Find My network, and Send Last Location",
       img:"images/11.png"
     },
     { id:"erase10", sev:"critical", cat:"Device Protection", title:"Erase Data after 10 Failed Attempts",
       why:"Enabling this setting automatically erases all local data if ten incorrect passcodes are entered. It stops brute-force guessing attacks that try to unlock your phone. It’s a strong deterrent that protects your most personal information if your device is stolen.",
-      action:"Settings → Face ID & Passcode → Toggle “Erase Data”",
+      action:"Settings → Face ID & Passcode → Erase Data → On",
       img:"images/12.png"
     },
     { id:"updates", sev:"critical", cat:"Device Protection", title:"Software Updates",
@@ -311,12 +311,12 @@ Merged: v14.6 audit logic + Guide v1 detailed text + images between details and 
     },
     { id:"stolen", sev:"high", cat:"Device Protection", title:"Stolen Device Protection",
       why:"Stolen Device Protection adds new safeguards when your iPhone is away from familiar locations. It requires Face ID or Touch ID, and sometimes a waiting period, before sensitive changes can be made. Even if someone knows your passcode, they can’t disable key protections.",
-      action:"Settings → Face ID & Passcode → Stolen Device Protection",
+      action:"Settings → Face ID & Passcode → Stolen Device Protection → On",
       img:"images/14.png"
     },
     { id:"attention", sev:"high", cat:"Device Protection", title:"Require Attention for Face ID",
       why:"Requiring attention ensures your iPhone only unlocks when you are consciously looking at it. This prevents unlock attempts while you’re asleep or unaware. It’s a simple step that adds personal control to biometric security.",
-      action:"Settings → Face ID & Passcode → Require Attention",
+      action:"Settings → Face ID & Passcode → Require Attention for Face ID → On",
       img:"images/15.png"
     },
     { id:"airdrop", sev:"high", cat:"Device Protection", title:"AirDrop",
@@ -353,7 +353,7 @@ Merged: v14.6 audit logic + Guide v1 detailed text + images between details and 
     },
     { id:"ckv", sev:"low", cat:"Safe Browsing & Communication", title:"Contact Key Verification",
       why:"Contact Key Verification adds a visible trust indicator to iMessage and FaceTime. It lets you confirm that you’re communicating with the right person, not an impersonator. For high-value or sensitive conversations, it provides additional peace of mind.",
-      action:"Settings → [your name] → iCloud → Contact Key Verification",
+      action:"Settings → [your name] → Contact Key Verification → On",
       img:"images/22.png"
     }
   ];
