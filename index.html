@@ -376,12 +376,25 @@ Clouds & Keys — Guided iCloud Security Audit v26
     const today=new Date().toISOString().slice(0,10);
     const enabled=protections.filter(p=>state[p.id]==='enabled').map(p=>p.title);
     const missing=protections.filter(p=>state[p.id]!=='enabled').map(p=>p.title);
-    const {level,pct}=computeRisk();
+    const {level}=computeRisk();
+    let contextLine = '';
+    if(level === 'Minimal Risk'){
+      contextLine = 'Your account and devices are well protected. Keep software and backups up to date to maintain this level.';
+    } else if(level === 'Low Risk'){
+      contextLine = 'Most key protections are in place, but a few settings could be improved for stronger security.';
+    } else {
+      contextLine = 'Several important protections are missing. Review skipped items to reduce your exposure to account or data compromise.';
+    }
     const text=[
       'Clouds & Keys — iCloud Security Audit Summary',
-      `Date: ${today}`,'',`Risk: ${level}`,'',
-      'Enabled Protections:', enabled.length?('• '+enabled.join('\n• ')):'• (None)','',
-      'Skipped:', missing.length?('• '+missing.join('\n• ')):'• (None) — All protections verified.'
+      `Date: ${today}`,'',
+      `Your iCloud protection level: ${level}`,
+                contextLine,'',
+      'Enabled Protections',
+      'These settings are confirmed as active and verified:', enabled.length?('• '+enabled.join('\n• ')):'• (None)','',
+      'Skipped:', missing.length?('• '+missing.join('\n• ')):'• (None) — All protections verified.','',
+      '',
+      '© 2025 Clouds & Keys. For detailed guidance, visit cloudsandkeys.com/guide.'
     ].join('\n');
     try {
       await navigator.clipboard.writeText(text);
