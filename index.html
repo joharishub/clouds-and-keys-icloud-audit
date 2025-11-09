@@ -1,135 +1,94 @@
-<!-- 
-Clouds & Keys — Guided iCloud Security Audit (v14.2.2)
-© 2025 Johari Hamilton. All rights reserved.
-Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
+<!--
+Clouds & Keys — Guided iCloud Security Audit v26
+© 2025 Clouds & Keys. All rights reserved. Self-contained, no external deps.
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Guided iCloud Security Audit — Clouds & Keys</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Clouds & Keys — Guided iCloud Security Audit (v2.3)</title>
 <style>
-  /* ================== SCOPE ================== */
-  #ck-wizard { font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", Inter, Arial, Helvetica, sans-serif; color:#111827; }
-  #ck-wizard * { box-sizing:border-box; }
-  #ck-wizard .wrap { max-width:860px; margin:24px auto; padding:16px; }
-  #ck-wizard .card { background:#fff; border:1px solid #E5E7EB; border-radius:16px; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
-  #ck-wizard h1 { font-size:22px; margin:0 0 8px; color:#0F172A; }
-  #ck-wizard h3 { font-size:16px; margin:0 0 6px; color:#111827; }
-  #ck-wizard p { margin:0 0 12px; }
-  #ck-wizard .muted { color:#6B7280; }
-
-  /* Brand */
   :root{
-    --ck-blue:#2563EB;
-    --ck-blue2:#3882F6;
-    --ck-green:#16A34A;
-    --ck-amber:#D97706;
-    --ck-red:#DC2626;
-    --ck-gray:#6B7280;
-    --ck-slate:#374151;
-    --ck-bg:#F8FAFC;
+    --ck-blue:#2563EB; --ck-blue2:#3882F6;
+    --ck-green:#16A34A; --ck-amber:#D97706; --ck-red:#DC2626;
+    --ck-gray:#6B7280; --ck-bg:#F8FAFC; --ck-border:#E5E7EB;
   }
-
-  /* Pills / buttons */
-  #ck-wizard .btn { display:inline-flex; align-items:center; gap:8px; border:1px solid transparent; border-radius:999px; padding:10px 14px; font-size:14px; font-weight:600; background:#fff; cursor:pointer; transition:all .2s ease; }
-  #ck-wizard .btn-primary { background:var(--ck-blue); color:#fff; }
-  #ck-wizard .btn-secondary { color:var(--ck-blue); border-color:var(--ck-blue); }
-  #ck-wizard .btn-ghost { color:#111827; border-color:#E5E7EB; }
-  #ck-wizard .btn:disabled { opacity:.55; cursor:not-allowed; }
-
-  /* Badges */
-  #ck-wizard .badge { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:999px; font-weight:700; border:1px solid transparent; }
-  #ck-wizard .badge.neutral { background:#F3F4F6; color:#374151; border-color:#E5E7EB; }
-  #ck-wizard .badge.minimal { background:#ECFDF5; color:var(--ck-green); border-color:#BBF7D0; }
-  #ck-wizard .badge.low { background:#FFFBEB; color:var(--ck-amber); border-color:#FDE68A; }
-  #ck-wizard .badge.high { background:#FEF2F2; color:var(--ck-red); border-color:#FECACA; }
-
-  /* Progress bar */
-  #ck-wizard .progress { height:8px; width:100%; background:#E5E7EB; border-radius:999px; overflow:hidden; }
-  #ck-wizard .progress > i { display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--ck-blue),var(--ck-blue2)); transition:width .25s ease; }
-  #ck-wizard .notes { font-size:13px; color:#6B7280; margin-top:6px; }
-
-  /* Topbar */
-  #ck-wizard .topbar { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-  #ck-wizard .legend { font-size:13px; color:#6B7280; display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 0; }
-  #ck-wizard .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
-  #ck-wizard .dot.green{ background:var(--ck-green); }
-  #ck-wizard .dot.amber{ background:var(--ck-amber); }
-  #ck-wizard .dot.gray{ background:#9CA3AF; }
-
-  /* Step */
-  #ck-wizard .why, #ck-wizard .action { background:#F9FAFB; border:1px solid #E5E7EB; border-radius:12px; padding:12px; margin:10px 0; }
-  #ck-wizard .foot { display:flex; justify-content:space-between; align-items:center; margin-top:16px; }
-  #ck-wizard .hidden { display:none !important; }
-
-  /* Drawer (slide-out) */
-  #ck-wizard .drawer-mask { position:fixed; inset:0; background:rgba(17,24,39,.35); backdrop-filter:blur(1px); opacity:0; pointer-events:none; transition:opacity .2s ease; }
-  #ck-wizard .drawer-mask.open { opacity:1; pointer-events:auto; }
-  #ck-wizard .drawer { position:fixed; top:0; right:-364px; width:340px; max-width:86vw; height:100%; background:#fff; border-left:1px solid #E5E7EB; box-shadow:-8px 0 24px rgba(0,0,0,.08); transition:right .25s ease; display:flex; flex-direction:column; }
-  #ck-wizard .drawer.open { right:0; }
-  #ck-wizard .drawer-head { padding:14px 16px; border-bottom:1px solid #E5E7EB; display:flex; align-items:center; justify-content:space-between; }
-  #ck-wizard .drawer-title { font-weight:800; color:#111827; }
-  #ck-wizard .drawer-body { padding:10px 0 14px; overflow:auto; }
-  #ck-wizard .drawer-section { padding:10px 16px; }
-  #ck-wizard .mini { font-size:13px; color:#6B7280; }
-  #ck-wizard .row { display:flex; align-items:center; gap:10px; padding:10px 16px; border-bottom:1px solid #F3F4F6; cursor:pointer; }
-  #ck-wizard .row:hover { background:#F9FAFB; }
-  #ck-wizard .status { width:10px; height:10px; border-radius:50%; border:1px solid #E5E7EB; }
-  #ck-wizard .status.enabled { background:var(--ck-green); border-color:var(--ck-green); }
-  #ck-wizard .status.reviewed { background:var(--ck-amber); border-color:var(--ck-amber); }
-  #ck-wizard .status.skipped { background:#9CA3AF; border-color:#9CA3AF; }
-  #ck-wizard .row-title { font-size:14px; color:#111827; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
-  @media(max-width:520px){ #ck-wizard .btn{padding:8px 12px;} }
+  body{margin:0;background:#F8FAFC;font-family:ui-sans-serif,system-ui,-apple-system,"SF Pro Text",Inter,Arial,Helvetica,sans-serif;color:#111827}
+  #ck-wizard .wrap{max-width:860px;margin:24px auto;padding:16px}
+  .card{background:#fff;border:1px solid var(--ck-border);border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  h1{font-size:22px;margin:0 0 8px;color:#0F172A}
+  h3{font-size:18px;margin:0 0 6px;color:#111827}
+  p{margin:0 0 12px;line-height:1.5}
+  .muted{color:var(--ck-gray)}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:999px;padding:10px 14px;font-size:14px;font-weight:600;background:#fff;cursor:pointer;transition:.2s all}
+  .btn-primary{background:var(--ck-blue);color:#fff}
+  .btn-ghost{color:#111827;border-color:var(--ck-border)}
+  .btn:disabled{opacity:.55;cursor:not-allowed}
+  .topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .progress{height:8px;width:100%;background:#E5E7EB;border-radius:999px;overflow:hidden;transition:background .5s ease}
+  .progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ck-blue),var(--ck-blue2));transition:width .25s ease}
+  .notes{font-size:13px;color:var(--ck-gray);margin-top:6px}
+  .action{background:#F9FAFB;border:1px solid var(--ck-border);border-radius:12px;padding:12px;margin:12px 0}
+  .action p{margin:0;color:var(--ck-blue);font-weight:600}
+  .detail{margin:10px 0 12px}
+  .step-img{display:block;max-height:360px;max-width:100%;margin:10px auto 12px;object-fit:contain;border-radius:12px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.10)}
+  .foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+  .hidden{display:none!important}
+  .badge{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;font-weight:700;border:1px solid var(--ck-border)}
+  .badge.minimal{background:#ECFDF5;color:#065F46}
+  .badge.low{background:#FFFBEB;color:#92400E}
+  .badge.high{background:#FEF2F2;color:#991B1B}
+  /* Drawer */
+  .drawer-mask{position:fixed;inset:0;background:rgba(17,24,39,.35);backdrop-filter:blur(1px);opacity:0;pointer-events:none;transition:opacity .2s}
+  .drawer-mask.open{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:-360px;width:340px;max-width:86vw;height:100%;background:#fff;border-left:1px solid var(--ck-border);box-shadow:-8px 0 24px rgba(0,0,0,.08);transition:right .25s;display:flex;flex-direction:column}
+  .drawer.open{right:0}
+  .drawer-head{padding:14px 16px;border-bottom:1px solid var(--ck-border);display:flex;align-items:center;justify-content:space-between}
+  .drawer-title{font-weight:800}
+  .drawer-body{padding:10px 0 14px;overflow:auto}
+  .mini{font-size:13px;color:var(--ck-gray)}
+  .row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #F3F4F6;cursor:pointer}
+  .row:hover{background:#F9FAFB}
+  .status{width:10px;height:10px;border-radius:50%;border:1px solid var(--ck-border)}
+  .status.enabled{background:var(--ck-green);border-color:var(--ck-green)}
+  .status.skipped{background:#9CA3AF;border-color:#9CA3AF}
+  .row-title{font-size:14px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* Amber flash when skipping */
+  .progress.flash{background:#FDE68A!important}
+  @media(max-width:520px){ .btn{padding:8px 12px} .step-img{max-height:300px} }
 </style>
 </head>
 <body>
 <div id="ck-wizard">
   <div class="wrap">
-    <!-- LANDING -->
+    <!-- Landing -->
     <div id="landing" class="card" style="text-align:center;">
       <h1>Guided iCloud Security Audit</h1>
-      <p class="muted intro">
-        Follow each step and compare it to your iPhone settings.<br>
-        Select <strong>Enabled</strong> if it’s set correctly, or <strong>Needs Review</strong> if it isn’t.<br>
-        At the end, you’ll receive an audit summary and risk level.
-      </p>
+      <p class="muted">Work through each setting. Mark it <strong>Enabled</strong> if it matches your iPhone, or <strong>Skip</strong> to move on. You’ll get a risk badge and summary at the end.</p>
       <button id="beginBtn" class="btn btn-primary">Begin Audit</button>
     </div>
 
-    <!-- WIZARD -->
+    <!-- Wizard -->
     <div id="wizard" class="card hidden">
       <div class="topbar">
-        <div style="flex:1 1 380px; min-width:260px;">
-            <div id="phaseBadge"
-                 style="font-weight:600; color:#444; background:#f5f5f5; padding:6px 12px; border-radius:8px; display:inline-block;">
-              Audit in Progress
-            </div>
-          <div class="legend">
-            <span><i class="dot green"></i> Enabled</span>
-            <span><i class="dot amber"></i> Needs Review</span>
-            <span><i class="dot gray"></i> Skipped</span>
-          </div>
-          <div class="progress" style="margin-top:8px;"><i id="bar"></i></div>
+        <div style="flex:1 1 380px;min-width:260px;">
+          <div class="progress" id="progressTop"><i id="bar"></i></div>
           <p class="notes" id="progressNote">Step 1 of 20</p>
         </div>
         <div style="display:flex;gap:8px;align-items:flex-start;">
-          <button id="openDrawer" class="btn btn-secondary">View Progress</button>
+          <button id="openDrawer" class="btn btn-ghost">View Progress</button>
         </div>
       </div>
 
-      <!-- Step -->
       <div id="stepArea" style="margin-top:16px;">
         <h3 id="stepTitle"></h3>
-        <p class="muted" id="stepPath" style="margin-top:-4px;"></p>
-        <div class="why"><strong>Why it matters:</strong><p id="why"></p></div>
-        <div class="action"><strong>Steps:</strong><p id="action"></p></div>
+        <p id="detail" class="detail muted"></p>
+        <img id="stepImage" class="step-img" alt="" src="" onerror="this.style.visibility='hidden'"/>
+        <div class="action"><p id="action"></p></div>
+
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button id="markEnabled" class="btn btn-primary">Mark as Enabled</button>
-          <button id="markReviewed" class="btn btn-secondary">Needs Review</button>
           <button id="skip" class="btn btn-ghost">Skip</button>
         </div>
         <div class="foot">
@@ -137,43 +96,35 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
         </div>
       </div>
 
-      <!-- Confirm -->
-      <div id="confirm" class="hidden" style="margin-top:16px; text-align:center;">
+      <div id="confirm" class="hidden" style="margin-top:16px;text-align:center;">
         <h1>Submit Audit</h1>
         <p class="muted">You’ve reached the end. Review your progress or generate your summary.</p>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
-          <button id="openDrawerConfirm" class="btn btn-secondary">Review Progress</button>
+          <button id="openDrawerConfirm" class="btn btn-ghost">Review Progress</button>
           <button id="generateSummary" class="btn btn-primary">Generate Summary</button>
         </div>
       </div>
 
-      <!-- Summary -->
       <div id="summary" class="hidden" style="margin-top:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-          <span id="phaseComplete" class="badge minimal">Audit Complete</span>
-        </div>
-        <h1 style="margin-top:16px;">Audit Summary</h1>
-        <p>Your iCloud Security Badge:</p>
+        <h1 style="margin-top:0;">Audit Summary</h1>
         <div id="riskBadge" class="badge minimal">Minimal Risk</div>
-
         <div class="card" style="margin-top:12px;">
           <h3>Enabled Protections</h3>
           <ul id="enabledList"></ul>
         </div>
         <div class="card" style="margin-top:12px;">
-          <h3>Needs Review / Skipped</h3>
+          <h3>Skipped</h3>
           <ul id="missingList"></ul>
         </div>
-
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-          <button id="copyReport" class="btn btn-secondary">Copy Report</button>
+          <button id="copyReport" class="btn btn-ghost">Copy Report</button>
           <button id="restart" class="btn btn-ghost">New Audit</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Slide-out Drawer -->
+  <!-- Drawer -->
   <div id="drawerMask" class="drawer-mask"></div>
   <aside id="drawer" class="drawer" aria-label="Progress drawer">
     <div class="drawer-head">
@@ -181,11 +132,11 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
       <button id="closeDrawer" class="btn btn-ghost">Close</button>
     </div>
     <div class="drawer-body">
-      <div class="drawer-section">
+      <div class="card" style="border-radius:0;border-left:0;border-right:0;">
         <div class="progress"><i id="drawerBar"></i></div>
         <p class="mini" id="drawerProgressNote" style="margin:6px 0 0;">0% complete</p>
+        <p class="mini" id="drawerCounts" style="margin:4px 0 0;">Enabled 0 • Skipped 0</p>
         <p class="mini" id="drawerRisk" style="margin:4px 0 0;">Risk so far: —</p>
-        <p class="mini" id="drawerCounts" style="margin:4px 0 0;">Enabled 0 • Reviewed 0 • Skipped 0</p>
       </div>
       <div id="drawerList"></div>
     </div>
@@ -194,377 +145,276 @@ Self-contained, no external deps. CSS strictly scoped to #ck-wizard.
 
 <script>
 (function(){
-  /* ===== Protections (20) with severities & categories ===== */
+  // ========= Protections (20) with content + weights =========
+  // v2.1 category multipliers: Account .40, Device .35, System .15, Web .10
   const protections = [
-    // Account Protection (includes Safety Check)
-    { id:"emails",     sev:"critical", cat:"Account Protection", title:"Emails & Phone Numbers",
-      why:"Keep your sign-in and recovery info current so you don’t miss alerts or lose access.",
-      action:"Settings → [your name] → Sign-In & Security → Verify Emails and Phone Numbers."
-    },
-    { id:"twofa",      sev:"critical", cat:"Account Protection", title:"Two-Factor Authentication & Trusted Devices",
-      why:"Stops an attacker that has your password and ensures only your devices receive verification codes.",
-      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → ON + Verify Trusted Phone Numbers and Devices."
-    },
-    { id:"rkey",       sev:"critical", cat:"Account Protection", title:"Recovery Key",
-      why:"If you lose your password or trusted device, use a recovery key to reset your password and regain access.",
-      action:"Settings → [your name] → Sign-In & Security → Recovery Key → On / Create New."
-    },
-    { id:"adp",        sev:"high",     cat:"Account Protection", title:"Advanced Data Protection",
-      why:"Protected data can only be decrypted on your trusted devices, stopping attackers and even Apple from gaining access.",
-      action:"Settings → [your name] → iCloud → Advanced Data Protection → On."
-    },
-    { id:"keys",       sev:"high",     cat:"Account Protection", title:"Security Keys",
-      why:"An advanced security feature for those who want the best protection from targeted phishing attacks or social engineering scams. (Requires a pair of Security Keys)",
-      action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Security Keys → Add Security Keys."
-    },
-    { id:"webOff",     sev:"high",     cat:"Account Protection", title:"Access iCloud Data on the Web",
-      why:"Removes the ability to login to iCloud.com, which reduces browser-based attacks and phishing.",
-      action:"Settings → [your name] → iCloud → Access iCloud Data on the Web → Off (enable only when needed)."
-    },
-    { id:"rcontacts",  sev:"low",     cat:"Account Protection", title:"Recovery Contacts",
-      why:"Trusted people can help recover your account if you get locked out.",
-      action:"Settings → [your name] → Sign-In & Security → Recovery Methods → Recovery Contacts → Add Recovery Contact."
-    },
-    { id:"safety",     sev:"high",     cat:"Account Protection", title:"Safety Check",
-      why:"Quickly review or reset information you share with people, apps, and devices.",
-      action:"Settings → Privacy & Security → Safety Check → Manage Sharing & Access / Emergency Reset."
-    },
+    // Account Protection
+    {id:"emails", cat:"Account Protection", sev:"critical",
+     title:"Emails & Phone Numbers",
+     why:"Keeping your Apple ID contact information up to date ensures you can recover your account if you ever get locked out. Recovery messages and verification codes depend on these addresses and numbers being current. It’s a simple but essential safeguard for maintaining continuous access.",
+     action:"Settings → [your name] → Sign-In & Security → Verify Emails & Phone Numbers",
+     img:"images/01.png", weight:3, mult:.40},
+    {id:"twofa", cat:"Account Protection", sev:"critical",
+     title:"Two-Factor Authentication & Trusted Devices",
+     why:"Two-factor authentication makes it nearly impossible for someone to sign in without your approval, even if they know your password. Only devices you trust can receive verification codes. This extra layer of identity proof keeps your account secure during logins and password resets.",
+     action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → ON + Verify Trusted Phone Numbers and Devices",
+     img:"images/02.png", weight:3, mult:.40},
+    {id:"keys", cat:"Account Protection", sev:"high",
+     title:"Security Keys",
+     why:"Security keys replace verification codes with a physical hardware token, protecting your Apple ID from phishing and fake login pages. Without the key, no one can access your account, not even with your password. This is the most secure form of sign-in Apple supports.",
+     action:"Settings → [your name] → Sign-In & Security → Two-Factor Authentication → Security Keys → Add Security Keys",
+     img:"images/03.png", weight:2, mult:.40},
+    {id:"rcontacts", cat:"Account Protection", sev:"low",
+     title:"Recovery Contacts",
+     why:"Recovery contacts are trusted people you choose to help you regain access if you ever get locked out of your account. They can verify your identity to Apple without accessing your data. It’s a low-effort way to add a human safety net to your Apple ID.",
+     action:"Settings → [your name] → Sign-In & Security → Recovery Contacts → Add Recovery Contact",
+     img:"images/04.png", weight:1, mult:.40},
+    {id:"rkey", cat:"Account Protection", sev:"critical",
+     title:"Recovery Key",
+     why:"A recovery key is your personal master key to regain access to your Apple ID if you lose your password or trusted devices. It replaces Apple’s fallback recovery process, giving you full control. Keeping a printed copy stored safely ensures you’ll never lose access to your data.",
+     action:"Settings → [your name] → Sign-In & Security → Recovery Key → On / Create New",
+     img:"images/05.png", weight:3, mult:.40},
+    {id:"adp", cat:"Account Protection", sev:"high",
+     title:"Advanced Data Protection",
+     why:"Advanced Data Protection upgrades iCloud to end-to-end encryption for most data categories, including backups, Photos, and Notes. Only your trusted devices hold the keys. Even Apple cannot access your protected data, giving you the highest level of privacy Apple offers.",
+     action:"Settings → [your name] → iCloud → Advanced Data Protection → On",
+     img:"images/06.png", weight:2, mult:.40},
+    {id:"icloudWeb", cat:"Account Protection", sev:"high",
+     title:"Access iCloud Data on the Web",
+     why:"Disabling access to iCloud data through a browser minimizes the number of places your information can be reached. It prevents login attempts from unfamiliar devices or public computers. Keep this off unless you have a specific reason to use iCloud.com regularly.",
+     action:"Settings → [your name] → iCloud → Access iCloud Data on the Web → Off",
+     img:"images/07.png", weight:2, mult:.40},
 
     // Device Protection
-    { id:"passcode",   sev:"critical", cat:"Device Protection", title:"Require Passcode",
-      why:"This is the core of iPhone encryption and without it, anyone with your phone can access your data and settings.",
-      action:"Settings → Face ID & Passcode → Require Passcode → Immediately."
-    },
-    { id:"backup",     sev:"critical", cat:"Device Protection", title:"iCloud Backup",
-      why:"Ensures you can restore your data after loss, theft, or damage.",
-      action:"Settings → [your name] → iCloud → iCloud Backup → Back Up This iPhone → On."
-    },
-    { id:"findmy",     sev:"critical", cat:"Device Protection", title:"Find My iPhone",
-      why:"Lets you locate, lock or wipe a lost/stolen device.",
-      action:"Settings → [your name] → Find My → Find My iPhone → On, Find My network On, Send Last Location On."
-    },
-    { id:"erase10",    sev:"critical", cat:"Device Protection", title:"Erase Data after 10 Failed Attempts",
-      why:"Stops brute-force passcode guessing by wiping data after too many failures.",
-      action:"Settings → Face ID & Passcode → Erase Data → On."
-    },
-    { id:"updates",    sev:"critical", cat:"Device Protection", title:"Software Update",
-      why:"Installs the latest security patches quickly to close known vulnerabilities.",
-      action:"Settings → General → Software Update → Automatic Updates → Automatically Install."
-    },
-    { id:"stolen",     sev:"high",     cat:"Device Protection", title:"Stolen Device Protection",
-      why:"Blocks sensitive device and account changes even if a thief knows your passcode.",
-      action:"Settings → Face ID & Passcode → Stolen Device Protection → On."
-    },
-    { id:"attention",  sev:"high",     cat:"Device Protection", title:"Require Attention for Face ID",
-      why:"Prevents unlock while you’re asleep or not looking at the device.",
-      action:"Settings → Face ID & Passcode → Require Attention for Face ID → On."
-    },
-    { id:"airdrop", sev:"high", cat:"Device Protection", title:"AirDrop",
-      why:"Prevents malicious or unwanted wireless file transfer prompts.",
-      action:"Settings → General → AirDrop → Receiving Off or Contacts Only."
-    },
-    { id:"bringTogether", sev:"low", cat:"Device Protection", title:"Bringing Devices Together",
-      why:"Prevents your iPhone from sharing information when it’s held near another device.",
-      action:"Settings → General → AirDrop → Bringing Devices Together → Off (turn it on only when you’re sharing or setting up a device)."
-    },
-    { id:"wired",      sev:"high",     cat:"Device Protection", title:"Wired Accessories",
-      why:"Prevents unauthorized device access over USB to unknown devices.",
-      action:"Settings → Privacy & Security → Wired Accessories → Ask for New Accessories."
-    },
-    { id:"vpnmdm",     sev:"high",     cat:"Device Protection", title:"VPN & Device Management",
-      why:"Ensures no unauthorized configuration or management profiles control your iPhone.",
-      action:"Settings → General → VPN & Device Management → Remove unfamiliar profiles."
-    },
+    {id:"backup", cat:"Device Protection", sev:"critical",
+     title:"iCloud Backup",
+     why:"Regular iCloud backups ensure your data is safely stored and can be restored after a loss, theft, or device replacement. This protection covers photos, messages, app data, and system settings. It turns a potential disaster into a recoverable event.",
+     action:"Settings → [your name] → iCloud → iCloud Backup → Back Up This iPhone → On",
+     img:"images/08.png", weight:3, mult:.35},
+    {id:"findmy", cat:"Device Protection", sev:"critical",
+     title:"Find My iPhone",
+     why:"Find My iPhone lets you locate, lock, or erase your device if it’s ever lost or stolen. It also prevents others from activating your device without your permission. This single feature often determines whether your data remains private or ends up exposed.",
+     action:"Settings → [your name] → Find My → Find My iPhone → Turn on Find My iPhone, Find My network, and Send Last Location",
+     img:"images/09.png", weight:3, mult:.35},
+    {id:"updates", cat:"Device Protection", sev:"critical",
+     title:"Automatic Updates",
+     why:"Keeping software up to date ensures your iPhone has the latest security patches from Apple. Most attacks target known vulnerabilities that updates quickly fix. Automatic updates close those gaps without requiring constant manual checks.",
+     action:"Settings → General → Software Update → Automatic Updates → Automatically Install",
+     img:"images/10.png", weight:3, mult:.35},
+    {id:"airdrop", cat:"Device Protection", sev:"high",
+     title:"AirDrop",
+     why:"Setting AirDrop to “Off” keeps random people nearby from sending you files or requests. This simple change reduces exposure to spam, pranks, and possible data injection attempts.",
+     action:"Settings → General → AirDrop → Receiving Off or Contacts Only",
+     img:"images/11.png", weight:2, mult:.35},
+    {id:"vpnmdm", cat:"Device Protection", sev:"high",
+     title:"VPN & Device Management Review",
+     why:"Reviewing VPN and device management settings ensures no hidden profiles or certificates control your network traffic or device policies. These settings are common entry points for corporate or malicious oversight. Regular review keeps your device’s configuration fully under your control.",
+     action:"Settings → General → VPN & Device Management → Remove unfamiliar profiles",
+     img:"images/12.png", weight:2, mult:.35},
+    {id:"attention", cat:"Device Protection", sev:"low",
+     title:"Require Attention for Face ID",
+     why:"Requiring attention ensures your iPhone only unlocks when you are consciously looking at it. This prevents unlock attempts while you’re asleep or unaware. It’s a simple step that adds personal control to biometric security.",
+     action:"Settings → Face ID & Passcode → Require Attention for Face ID → On",
+     img:"images/13.png", weight:1, mult:.35},
+    {id:"stolen", cat:"Device Protection", sev:"high",
+     title:"Stolen Device Protection",
+     why:"Stolen Device Protection adds new safeguards when your iPhone is away from familiar locations. It requires Face ID or Touch ID, and sometimes a waiting period, before sensitive changes can be made. Even if someone knows your passcode, they can’t disable key protections.",
+     action:"Settings → Face ID & Passcode → Stolen Device Protection → On",
+     img:"images/14.png", weight:2, mult:.35},
+    {id:"passcode", cat:"Device Protection", sev:"critical",
+     title:"Require Passcode",
+     why:"Your passcode is the foundation of iPhone encryption. It locks your device, encrypts stored data, and prevents anyone else from accessing your information. Without it, nearly every protection on your device is weakened or disabled.",
+     action:"Settings → Face ID & Passcode → Require Passcode → Immediately",
+     img:"images/15.png", weight:3, mult:.35},
+    {id:"erase10", cat:"Device Protection", sev:"critical",
+     title:"Erase Data after 10 Failed Attempts",
+     why:"Enabling this setting automatically erases all local data if ten incorrect passcodes are entered. It stops brute-force guessing attacks that try to unlock your phone. It’s a strong deterrent that protects your most personal information if your device is stolen.",
+     action:"Settings → Face ID & Passcode → Erase Data → On",
+     img:"images/16.png", weight:3, mult:.35},
 
-    // Safe Browsing & Communication
-    { id:"fraudWarn",  sev:"low",     cat:"Safe Browsing & Communication", title:"Fraudulent Website Warning",
-      why:"Warns about known phishing or malicious sites.",
-      action:"Settings → Safari → Privacy & Security → Fraudulent Website Warning → On."
-    },
-    { id:"notSecure",  sev:"low",      cat:"Safe Browsing & Communication", title:"Not Secure Connection Warning",
-      why:"Alerts on unencrypted web pages to reduce phishing and credential exposure.",
-      action:"Settings → Safari → Privacy & Security → Show Not Secure Warnings → On."
-    },
-    { id:"ckv",        sev:"low",      cat:"Safe Browsing & Communication", title:"Contact Key Verification",
-      why:"Confirms secure iMessage/FaceTime sessions with an alert if a trusted contact cannot be verified.",
-      action:"Settings → [your name] → Contact Key Verification → On."
-    }
+    // System & Privacy
+    {id:"safety", cat:"System & Privacy Controls", sev:"high",
+     title:"Safety Check",
+     why:"Safety Check provides an emergency reset for privacy and sharing. It instantly stops location sharing, removes shared accounts, and reviews app access. It’s a vital feature for anyone leaving a risky situation or needing to reestablish personal control.",
+     action:"Settings → Privacy & Security → Safety Check → Select Manage Sharing & Access",
+     img:"images/17.png", weight:2, mult:.15},
+    {id:"wired", cat:"System & Privacy Controls", sev:"high",
+     title:"Wired Accessories",
+     why:"Limiting USB accessory access while locked prevents data connections from unknown devices. This blocks forensic tools and malicious chargers from reading data through the Lightning or USB-C port. It’s a discreet but effective layer against physical access threats.",
+     action:"Settings → Privacy & Security → Wired Accessories → Ask for New Accessories",
+     img:"images/18.png", weight:2, mult:.15},
+
+    // Safe Browsing (Apps → Safari)
+    {id:"fraudWarn", cat:"Safe Browsing", sev:"low",
+     title:"Fraudulent Website Warning",
+     why:"Safari’s Fraudulent Website Warning alerts you before visiting known phishing or malicious sites. It uses real-time threat data from Apple and Google to block deceptive web pages. This prevents you from entering passwords or information into fake login portals.",
+     action:"Settings → Apps → Safari → Fraudulent Website Warning → On",
+     img:"images/19.png", weight:1, mult:.10},
+    {id:"notSecure", cat:"Safe Browsing", sev:"low",
+     title:"Not Secure Connection Warning",
+     why:"When Safari shows a “Not Secure” label, it’s warning you that the page doesn’t use encryption. Any data entered there could be intercepted or modified. Paying attention to this alert protects your credentials and privacy during everyday browsing.",
+     action:"Settings → Apps → Safari → Show Not Secure Warnings → On",
+     img:"images/20.png", weight:1, mult:.10}
   ];
 
-  // State
+  // ========= State & Elements =========
   let idx = 0;
-  const state = Object.fromEntries(protections.map(p => [p.id, null])); // enabled|reviewed|skipped|null
-
-  // Elements
-  const landing = document.getElementById('landing');
-  const wizard = document.getElementById('wizard');
-  const beginBtn = document.getElementById('beginBtn');
-
-  const phaseBadge = document.getElementById('phaseBadge');
-  const statusBadge = document.getElementById('statusBadge');
-  const bar = document.getElementById('bar');
-  const progressNote = document.getElementById('progressNote');
-
-  const stepArea = document.getElementById('stepArea');
-  const stepTitle = document.getElementById('stepTitle');
-  const stepPath = document.getElementById('stepPath');
-  const whyEl = document.getElementById('why');
-  const actionEl = document.getElementById('action');
-  const sevNote = document.getElementById('sevNote');
-
-  const markEnabled = document.getElementById('markEnabled');
-  const markReviewed = document.getElementById('markReviewed');
-  const skip = document.getElementById('skip');
-  const back = document.getElementById('back');
-
-  const confirmView = document.getElementById('confirm');
-  const openDrawerConfirm = document.getElementById('openDrawerConfirm');
-  const generateSummary = document.getElementById('generateSummary');
-
-  const summary = document.getElementById('summary');
-  const phaseComplete = document.getElementById('phaseComplete');
-  const enabledList = document.getElementById('enabledList');
-  const missingList = document.getElementById('missingList');
-  const riskBadge = document.getElementById('riskBadge');
-  const copyReport = document.getElementById('copyReport');
-  const restart = document.getElementById('restart');
+  const state = Object.fromEntries(protections.map(p => [p.id, null])); // 'enabled' | 'skipped' | null
+  const landing=document.getElementById('landing'), wizard=document.getElementById('wizard');
+  const beginBtn=document.getElementById('beginBtn'), bar=document.getElementById('bar');
+  const progressTop=document.getElementById('progressTop'), progressNote=document.getElementById('progressNote');
+  const stepArea=document.getElementById('stepArea'), stepTitle=document.getElementById('stepTitle');
+  const detailEl=document.getElementById('detail'), actionEl=document.getElementById('action');
+  const stepImg=document.getElementById('stepImage');
+  const markEnabled=document.getElementById('markEnabled'), skip=document.getElementById('skip'), back=document.getElementById('back');
+  const confirmView=document.getElementById('confirm'), summary=document.getElementById('summary');
+  const enabledList=document.getElementById('enabledList'), missingList=document.getElementById('missingList');
+  const riskBadge=document.getElementById('riskBadge');
 
   // Drawer
-  const drawer = document.getElementById('drawer');
-  const drawerMask = document.getElementById('drawerMask');
-  const openDrawer = document.getElementById('openDrawer');
-  const closeDrawer = document.getElementById('closeDrawer');
-  const drawerBar = document.getElementById('drawerBar');
-  const drawerProgressNote = document.getElementById('drawerProgressNote');
-  const drawerRisk = document.getElementById('drawerRisk');
-  const drawerCounts = document.getElementById('drawerCounts');
-  const drawerList = document.getElementById('drawerList');
+  const drawer=document.getElementById('drawer'), drawerMask=document.getElementById('drawerMask');
+  const openDrawer=document.getElementById('openDrawer'), closeDrawer=document.getElementById('closeDrawer');
+  const openDrawerConfirm=document.getElementById('openDrawerConfirm'), drawerList=document.getElementById('drawerList');
+  const drawerBar=document.getElementById('drawerBar'), drawerProgressNote=document.getElementById('drawerProgressNote');
+  const drawerCounts=document.getElementById('drawerCounts'), drawerRisk=document.getElementById('drawerRisk');
 
-  // Helpers
-  function computeRiskSoFar() {
-    const missingCritical = protections.filter(p => p.sev === 'critical' && state[p.id] !== 'enabled');
-    const missingExploitSurface = protections.filter(p =>
-      ['webOff', 'airdrop'].includes(p.id) && state[p.id] !== 'enabled'
-    );
-    const missingProximity = protections.filter(p =>
-      ['bringTogether'].includes(p.id) && state[p.id] !== 'enabled'
-    );
-    const missingEnhancements = protections.filter(p =>
-      ['adp', 'rcontacts', 'safety', 'attention'].includes(p.id) && state[p.id] !== 'enabled'
-    );
-    const hasSecurityKeys = state['keys'] === 'enabled';
-
-    let level = 'Minimal Risk';
-
-    if (missingCritical.length > 0 || missingExploitSurface.length > 0) {
-      level = 'High Risk';
-    } else if (missingProximity.length > 0 || missingEnhancements.length >= 3) {
-      level = 'Low Risk';
-  }
-
-    // Security Keys reduce risk by one tier if enabled
-    if (hasSecurityKeys && level === 'High Risk') level = 'Low Risk';
-    else if (hasSecurityKeys && level === 'Low Risk') level = 'Minimal Risk';
-
-    return level;
+  // ========= Risk Logic =========
+  function computeRisk(){
+    const anyCriticalMissing = protections.some(p => p.sev==='critical' && state[p.id]!=='enabled');
+    const total = protections.reduce((a,p)=>a + p.weight*p.mult, 0);
+    let enabled = protections.reduce((a,p)=>a + (state[p.id]==='enabled' ? p.weight*p.mult : 0), 0);
+    if (state['keys']==='enabled') enabled += 0.20; // bonus
+    const pct = enabled/total;
+    let level;
+    if (anyCriticalMissing) level='High Risk';
+    else if (pct>=0.90) level='Minimal Risk';
+    else if (pct>=0.70) level='Low Risk';
+    else level='High Risk';
+    return {level, pct};
   }
 
   function setRiskBadge(el, level){
-    el.classList.remove('minimal','low','high','neutral');
-    if (level === 'High Risk') el.classList.add('high');
-    else if (level === 'Low Risk') el.classList.add('low');
-    else if (level === 'Minimal Risk') el.classList.add('minimal');
-    else el.classList.add('neutral');
-    
-    // Make rectangular, consistent with Audit Complete
-      el.style.borderRadius = '8px';
-      el.style.padding = '6px 12px';
-      el.style.fontWeight = '600';
-      el.style.display = 'inline-block';
+    el.classList.remove('minimal','low','high');
+    if (level==='High Risk') el.classList.add('high');
+    else if (level==='Low Risk') el.classList.add('low');
+    else el.classList.add('minimal');
     el.textContent = level;
   }
 
+  // ========= UI =========
   function updateProgressUI(){
-    const pct = Math.round((Math.min(idx, protections.length) / protections.length) * 100);
+    const pct = Math.round((Math.min(idx, protections.length)/protections.length)*100);
     bar.style.width = pct + '%';
     progressNote.textContent = `Step ${Math.min(idx+1, protections.length)} of ${protections.length}`;
-
-    // Drawer progress
+    // drawer
     drawerBar.style.width = pct + '%';
     drawerProgressNote.textContent = `${pct}% complete`;
-
-    // Counts
-    const enabled = Object.values(state).filter(v => v === 'enabled').length;
-    const reviewed = Object.values(state).filter(v => v === 'reviewed').length;
-    const skipped = Object.values(state).filter(v => v === 'skipped').length;
-    drawerCounts.textContent = `Enabled ${enabled} • Needs Review ${reviewed} • Skipped ${skipped}`;
-
-    // Risk so far
-    const level = computeRiskSoFar();
-    drawerRisk.textContent = `Risk so far: ${level}`;
+    const en = Object.values(state).filter(v=>v==='enabled').length;
+    const sk = Object.values(state).filter(v=>v==='skipped').length;
+    drawerCounts.textContent = `Enabled ${en} • Skipped ${sk}`;
+    drawerRisk.textContent = `Risk so far: ${computeRisk().level}`;
   }
 
   function renderDrawerList(){
-    drawerList.innerHTML = '';
-    protections.forEach((p, i) => {
-      const row = document.createElement('div');
-      row.className = 'row';
-      row.addEventListener('click', () => {
-        // Jump to step i
-        idx = i;
-        closeProgressDrawer();
-        showStep();
-        window.scrollTo({top:0, behavior:'smooth'});
-      });
-      const dot = document.createElement('i');
-      const st = state[p.id];
-      dot.className = 'status ' + (st ? st : 'skipped'); // show gray if null too
-      const title = document.createElement('div');
-      title.className = 'row-title';
-      title.textContent = `${i+1}. ${p.title}`;
-      row.appendChild(dot);
-      row.appendChild(title);
-      drawerList.appendChild(row);
+    drawerList.innerHTML='';
+    protections.forEach((p,i)=>{
+      const row=document.createElement('div'); row.className='row';
+      row.onclick=()=>{ idx=i; closeProgressDrawer(); showStep(); window.scrollTo({top:0,behavior:'smooth'}); };
+      const dot=document.createElement('i'); dot.className='status ' + (state[p.id]||'skipped');
+      const title=document.createElement('div'); title.className='row-title'; title.textContent=`${i+1}. ${p.title}`;
+      row.appendChild(dot); row.appendChild(title); drawerList.appendChild(row);
     });
   }
 
-  function openProgressDrawer(){
-    renderDrawerList();
-    updateProgressUI();
-    drawer.classList.add('open');
-    drawerMask.classList.add('open');
-  }
-  function closeProgressDrawer(){
-    drawer.classList.remove('open');
-    drawerMask.classList.remove('open');
-  }
+  function openProgressDrawer(){ renderDrawerList(); updateProgressUI(); drawer.classList.add('open'); drawerMask.classList.add('open'); }
+  function closeProgressDrawer(){ drawer.classList.remove('open'); drawerMask.classList.remove('open'); }
 
-  // Wizard rendering
   function showStep(){
-    if (idx >= protections.length){
-      // Done with steps → confirm screen
-      stepArea.classList.add('hidden');
-      confirmView.classList.remove('hidden');
-      phaseBadge.textContent = 'Audit in Progress'; // remains neutral until summary
-      updateProgressUI();
-      return;
-    }
-    confirmView.classList.add('hidden');
-    stepArea.classList.remove('hidden');
-
+    if(idx>=protections.length){ stepArea.classList.add('hidden'); confirmView.classList.remove('hidden'); updateProgressUI(); return; }
+    confirmView.classList.add('hidden'); stepArea.classList.remove('hidden');
     const p = protections[idx];
     stepTitle.textContent = p.title;
-    stepPath.textContent = `${p.cat} • ${p.sev.charAt(0).toUpperCase() + p.sev.slice(1)}`;
-    whyEl.textContent     = p.why;
-    actionEl.textContent  = p.action;
-
-    back.disabled = (idx === 0);
+    detailEl.innerHTML = `<div class="muted" style="margin-bottom:6px;">${p.cat} • ${p.sev[0].toUpperCase()+p.sev.slice(1)}</div>
+    <p style="margin-top:0;color:#111827;">${p.why}</p>`;
+    actionEl.textContent = p.action;
+    // image fade
+    stepImg.style.opacity = 0; stepImg.style.display='block'; stepImg.style.visibility='visible';
+    stepImg.onload=()=>{ stepImg.style.opacity=1; };
+    stepImg.onerror=()=>{ stepImg.style.opacity=1; stepImg.style.visibility='hidden'; };
+    stepImg.src = p.img || '';
+    stepImg.alt = p.title;
+    back.disabled = (idx===0);
     updateProgressUI();
   }
 
   function showSummary(){
-    // Build lists
-    const enabled = protections.filter(p => state[p.id] === 'enabled');
-    const missing = protections.filter(p => state[p.id] !== 'enabled');
-
-    enabledList.innerHTML = enabled.map(p => `<li>${p.title}</li>`).join('');
-    missingList.innerHTML = missing.map(p => `<li>${p.title}</li>`).join('');
-
-    // Final risk (same logic)
-    const level = computeRiskSoFar();
+    const enabled = protections.filter(p=>state[p.id]==='enabled');
+    const missing = protections.filter(p=>state[p.id]!=='enabled');
+    enabledList.innerHTML = enabled.map(p=>`<li>${p.title}</li>`).join('');
+    missingList.innerHTML = missing.map(p=>`<li>${p.title}</li>`).join('');
+    const {level} = computeRisk();
     setRiskBadge(riskBadge, level);
-
-    // Top state badge
-    phaseBadge.classList.add('hidden');
-    phaseComplete.classList.remove('hidden');
-    phaseComplete.textContent = 'Audit Complete';
-    phaseComplete.classList.remove('minimal','low','high');
-    phaseComplete.style.color = '#444';
-    phaseComplete.style.background = '#f5f5f5';
-    phaseComplete.style.border = '1px solid #E5E7EB';
-    phaseComplete.style.borderRadius = '8px';
-    phaseComplete.style.padding = '6px 12px';
-    phaseComplete.style.fontWeight = '600';
-    phaseComplete.style.display = 'inline-block';
-
-    // Hide drawer affordances on summary
-    openDrawer.classList.add('hidden');
-    closeProgressDrawer();
-
-    // Show
+    openDrawer.classList.add('hidden'); // Hide “View Progress” on summary
     stepArea.classList.add('hidden');
     confirmView.classList.add('hidden');
     summary.classList.remove('hidden');
-    window.scrollTo({top:0, behavior:'smooth'});
+    window.scrollTo({top:0,behavior:'smooth'});
   }
 
-  // Events
-  beginBtn.addEventListener('click', () => {
-    landing.classList.add('hidden');
-    wizard.classList.remove('hidden');
-    phaseBadge.textContent = 'Audit in Progress';
-    showStep();
+  // ========= Events =========
+  beginBtn.addEventListener('click', ()=>{ landing.classList.add('hidden'); wizard.classList.remove('hidden'); showStep(); });
+  markEnabled.addEventListener('click', ()=>{ state[protections[idx].id]='enabled'; idx++; showStep(); });
+  skip.addEventListener('click', ()=>{
+    state[protections[idx].id]='skipped';
+    // amber flash on progress bar
+    progressTop.classList.add('flash'); setTimeout(()=>progressTop.classList.remove('flash'),600);
+    idx++; showStep();
   });
-
-  document.getElementById('markEnabled').addEventListener('click', () => {
-    state[protections[idx].id] = 'enabled';
-    idx++;
-    showStep();
+  back.addEventListener('click', ()=>{ if(idx>0){ idx--; showStep(); }});
+  document.getElementById('generateSummary').addEventListener('click', showSummary);
+  document.getElementById('copyReport').addEventListener('click', async ()=>{
+    const today=new Date().toISOString().slice(0,10);
+    const enabled=protections.filter(p=>state[p.id]==='enabled').map(p=>p.title);
+    const missing=protections.filter(p=>state[p.id]!=='enabled').map(p=>p.title);
+    const {level,pct}=computeRisk();
+    const text=[
+      'Clouds & Keys — iCloud Security Audit Summary',
+      `Date: ${today}`,'',`Risk: ${level}`,'',
+      'Enabled Protections:', enabled.length?('• '+enabled.join('\n• ')):'• (None)','',
+      'Skipped:', missing.length?('• '+missing.join('\n• ')):'• (None) — All protections verified.'
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copyReport');
+      const originalText = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.classList.add('btn-primary');
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('btn-primary');
+      }, 1200);
+    } catch {
+      alert('Copy failed. Here is your summary:\n\n' + text);
+    }
   });
-  document.getElementById('markReviewed').addEventListener('click', () => {
-    state[protections[idx].id] = 'reviewed';
-    idx++;
-    showStep();
-  });
-  document.getElementById('skip').addEventListener('click', () => {
-    state[protections[idx].id] = 'skipped';
-    idx++;
-    showStep();
-  });
-  document.getElementById('back').addEventListener('click', () => {
-    if (idx > 0){ idx--; showStep(); }
-  });
-
-  // Drawer wiring
+  document.getElementById('restart').addEventListener('click', ()=>location.reload());
   openDrawer.addEventListener('click', openProgressDrawer);
-  openDrawerConfirm.addEventListener('click', openProgressDrawer);
+  openDrawerConfirm?.addEventListener('click', openProgressDrawer);
   closeDrawer.addEventListener('click', closeProgressDrawer);
   drawerMask.addEventListener('click', closeProgressDrawer);
 
-  // Generate Summary
-  generateSummary.addEventListener('click', showSummary);
-
-  // Copy report (clean text)
-  copyReport.addEventListener('click', async () => {
-    const today = new Date().toISOString().slice(0,10);
-    const enabled = protections.filter(p => state[p.id] === 'enabled').map(p => p.title);
-    const missing = protections.filter(p => state[p.id] !== 'enabled').map(p => p.title);
-    const risk = riskBadge.textContent;
-
-    const text = [
-      'Clouds & Keys — iCloud Security Audit Summary',
-      `Date: ${today}`,
-      '',
-      `Risk: ${risk}`,
-      '',
-      'Enabled Protections:',
-      enabled.length ? '• ' + enabled.join('\n• ') : '• (None)',
-      '',
-      'Needs Review / Skipped:',
-      missing.length ? '• ' + missing.join('\n• ') : '• (None) — All protections verified.'
-    ].join('\n');
-
-    try{
-      await navigator.clipboard.writeText(text);
-      copyReport.textContent = 'Copied!';
-      setTimeout(()=>copyReport.textContent='Copy Report', 1200);
-    }catch(e){
-      alert('Copy failed. Manually copy the text below:\n\n' + text);
+  // Swipe navigation (mobile): left=next, right=back
+  let touchX=null, touchTime=0;
+  document.addEventListener('touchstart', (e)=>{ touchX=e.changedTouches[0].clientX; touchTime=Date.now(); }, {passive:true});
+  document.addEventListener('touchend', (e)=>{
+    if(touchX===null) return;
+    const dx=e.changedTouches[0].clientX - touchX; const dt=Date.now()-touchTime;
+    if(dt<600 && Math.abs(dx)>48){
+      if(dx<0 && idx<protections.length){ state[protections[idx].id]??='skipped'; idx++; showStep(); } // swipe left → next (skip if undecided)
+      if(dx>0 && idx>0){ idx--; showStep(); } // swipe right → back
     }
-  });
-
-  // Restart
-  restart.addEventListener('click', () => location.reload());
+    touchX=null;
+  }, {passive:true});
 
 })();
 </script>
