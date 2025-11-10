@@ -108,6 +108,8 @@ Clouds & Keys — Guided iCloud Security Audit v26
       <div id="summary" class="hidden" style="margin-top:16px;">
         <h1 style="margin-top:0;">Audit Summary</h1>
         <div id="riskBadge" class="badge minimal">Minimal Risk</div>
+        <p id="summaryContext" class="muted" style="margin-top:8px;font-weight:500;"></p>
+
         <div class="card" style="margin-top:12px;">
           <h3>Enabled Protections</h3>
           <ul id="enabledList"></ul>
@@ -117,7 +119,6 @@ Clouds & Keys — Guided iCloud Security Audit v26
           <ul id="missingList"></ul>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-          <button id="copyReport" class="btn btn-ghost">Copy Report</button>
           <button id="restart" class="btn btn-ghost">New Audit</button>
         </div>
       </div>
@@ -354,6 +355,15 @@ Clouds & Keys — Guided iCloud Security Audit v26
     missingList.innerHTML = missing.map(p=>`<li>${p.title}</li>`).join('');
     const {level} = computeRisk();
     setRiskBadge(riskBadge, level);
+    // Set summary context line based on risk level
+    const context = document.getElementById('summaryContext');
+    if(level === 'Minimal Risk'){
+      context.textContent = 'Your account and devices are well protected. Keep software and backups up to date to maintain this level.';
+    } else if(level === 'Low Risk'){
+      context.textContent = 'Most key protections are in place, but a few settings could be improved for stronger security.';
+    } else {
+      context.textContent = 'Several important protections are missing. Review skipped items to reduce your exposure to account or data compromise.';
+    }
     openDrawer.classList.add('hidden'); // Hide “View Progress” on summary
     stepArea.classList.add('hidden');
     confirmView.classList.add('hidden');
@@ -372,44 +382,6 @@ Clouds & Keys — Guided iCloud Security Audit v26
   });
   back.addEventListener('click', ()=>{ if(idx>0){ idx--; showStep(); }});
   document.getElementById('generateSummary').addEventListener('click', showSummary);
-  document.getElementById('copyReport').addEventListener('click', async ()=>{
-    const today=new Date().toISOString().slice(0,10);
-    const enabled=protections.filter(p=>state[p.id]==='enabled').map(p=>p.title);
-    const missing=protections.filter(p=>state[p.id]!=='enabled').map(p=>p.title);
-    const {level}=computeRisk();
-    let contextLine = '';
-    if(level === 'Minimal Risk'){
-      contextLine = 'Your account and devices are well protected. Keep software and backups up to date to maintain this level.';
-    } else if(level === 'Low Risk'){
-      contextLine = 'Most key protections are in place, but a few settings could be improved for stronger security.';
-    } else {
-      contextLine = 'Several important protections are missing. Review skipped items to reduce your exposure to account or data compromise.';
-    }
-    const text=[
-      'Clouds & Keys — iCloud Security Audit Summary',
-      `Date: ${today}`,'',
-      `Your iCloud protection level: ${level}`,
-                contextLine,'',
-      'Enabled Protections',
-      'These settings are confirmed as active and verified:', enabled.length?('• '+enabled.join('\n• ')):'• (None)','',
-      'Skipped:', missing.length?('• '+missing.join('\n• ')):'• (None) — All protections verified.','',
-      '',
-      '© 2025 Clouds & Keys. For detailed guidance, visit https://cloudsandkeys.com/.'
-    ].join('\n');
-    try {
-      await navigator.clipboard.writeText(text);
-      const btn = document.getElementById('copyReport');
-      const originalText = btn.textContent;
-      btn.textContent = 'Copied!';
-      btn.classList.add('btn-primary');
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.classList.remove('btn-primary');
-      }, 1200);
-    } catch {
-      alert('Copy failed. Here is your summary:\n\n' + text);
-    }
-  });
   document.getElementById('restart').addEventListener('click', ()=>location.reload());
   openDrawer.addEventListener('click', openProgressDrawer);
   openDrawerConfirm?.addEventListener('click', openProgressDrawer);
