@@ -1,5 +1,5 @@
 <!--
-Clouds & Keys — Guided iCloud Security Audit v26
+Clouds & Keys — Guided iCloud Security Review v26
 © 2025 Clouds & Keys. All rights reserved. Self-contained, no external deps.
 -->
 <!DOCTYPE html>
@@ -7,7 +7,7 @@ Clouds & Keys — Guided iCloud Security Audit v26
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Clouds & Keys — Guided iCloud Security Audit (v2.3)</title>
+<title>Clouds & Keys — Guided iCloud Security Review (v2.3)</title>
 <style>
   :root{
     --ck-blue:#2563EB; --ck-blue2:#3882F6;
@@ -64,9 +64,9 @@ Clouds & Keys — Guided iCloud Security Audit v26
   <div class="wrap">
     <!-- Landing -->
     <div id="landing" class="card" style="text-align:center;">
-      <h1>Guided iCloud Security Audit</h1>
+      <h1>Guided iCloud Security Review</h1>
       <p class="muted">Work through each setting. Mark it <strong>Enabled</strong> if it matches your iPhone, or <strong>Skip</strong> to move on. You’ll get a risk badge and summary at the end.</p>
-      <button id="beginBtn" class="btn btn-primary">Begin Audit</button>
+      <button id="beginBtn" class="btn btn-primary">Begin Review</button>
     </div>
 
     <!-- Wizard -->
@@ -97,7 +97,7 @@ Clouds & Keys — Guided iCloud Security Audit v26
       </div>
 
       <div id="confirm" class="hidden" style="margin-top:16px;text-align:center;">
-        <h1>Submit Audit</h1>
+        <h1>Submit Review</h1>
         <p class="muted">You’ve reached the end. Review your progress or generate your summary.</p>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
           <button id="openDrawerConfirm" class="btn btn-ghost">Review Progress</button>
@@ -106,7 +106,7 @@ Clouds & Keys — Guided iCloud Security Audit v26
       </div>
 
       <div id="summary" class="hidden" style="margin-top:16px;">
-        <h1 style="margin-top:0;">Audit Summary</h1>
+        <h1 style="margin-top:0;">Review Summary</h1>
         <div id="riskBadge" class="badge minimal">Minimal Risk</div>
         <p id="summaryContext" class="muted" style="margin-top:8px;font-weight:500;"></p>
 
@@ -119,7 +119,7 @@ Clouds & Keys — Guided iCloud Security Audit v26
           <ul id="missingList"></ul>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-          <button id="restart" class="btn btn-ghost">New Audit</button>
+          <button id="restart" class="btn btn-ghost">New Review</button>
         </div>
       </div>
     </div>
