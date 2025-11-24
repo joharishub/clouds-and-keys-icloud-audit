@@ -353,8 +353,10 @@ Clouds & Keys — Guided iCloud Security Review v26
     const missing = protections.filter(p=>state[p.id]!=='enabled');
     enabledList.innerHTML = enabled.map(p=>`<li>${p.title}</li>`).join('');
     missingList.innerHTML = missing.map(p=>`<li>${p.title}</li>`).join('');
+
     const {level} = computeRisk();
     setRiskBadge(riskBadge, level);
+
     // Set summary context line based on risk level
     const context = document.getElementById('summaryContext');
     if(level === 'Minimal Risk'){
@@ -364,7 +366,12 @@ Clouds & Keys — Guided iCloud Security Review v26
     } else {
       context.textContent = 'Several important protections are missing. Review skipped items to reduce your exposure to account or data compromise.';
     }
+
+    // Hide progress UI + drawer button on summary
     openDrawer.classList.add('hidden'); // Hide “View Progress” on summary
+    progressTop.classList.add('hidden');  // <— hide bar
+    progressNote.classList.add('hidden'); // <— hide "Step X of Y"
+
     stepArea.classList.add('hidden');
     confirmView.classList.add('hidden');
     summary.classList.remove('hidden');
