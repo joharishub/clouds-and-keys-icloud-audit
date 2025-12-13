@@ -32,7 +32,21 @@ Clouds & Keys — Guided iCloud Security Review v26
   .action{background:#F9FAFB;border:1px solid var(--ck-border);border-radius:12px;padding:12px;margin:12px 0}
   .action p{margin:0;color:var(--ck-blue);font-weight:600}
   .detail{margin:10px 0 12px}
-  .step-img{display:block;max-height:360px;max-width:100%;margin:10px auto 12px;object-fit:contain;border-radius:12px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.10)}
+  /* Keep image area stable across steps (prevents card resizing / page jumping on mobile) */
+  .step-img{
+    display:block;
+    width:100%;
+    height:340px;              /* fixed space so each step doesn't reflow */
+    max-width:100%;
+    margin:10px auto 12px;
+    object-fit:contain;
+    border-radius:12px;
+    background:#fff;
+    box-shadow:0 2px 6px rgba(0,0,0,0.10);
+  }
+  /* Reserve space so steps with shorter text don't shrink the card dramatically */
+  #stepArea{min-height:640px}
+  @media(max-width:520px){ #stepArea{min-height:560px} }
   .foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
   .hidden{display:none!important}
   .badge{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;font-weight:700;border:1px solid var(--ck-border)}
@@ -56,7 +70,10 @@ Clouds & Keys — Guided iCloud Security Review v26
   .row-title{font-size:14px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   /* Amber flash when skipping */
   .progress.flash{background:#FDE68A!important}
-  @media(max-width:520px){ .btn{padding:8px 12px} .step-img{max-height:300px} }
+  @media(max-width:520px){
+    .btn{padding:8px 12px}
+    .step-img{height:260px}
+  }
 </style>
 </head>
 <body>
@@ -84,7 +101,7 @@ Clouds & Keys — Guided iCloud Security Review v26
       <div id="stepArea" style="margin-top:16px;">
         <h3 id="stepTitle"></h3>
         <p id="detail" class="detail muted"></p>
-        <img id="stepImage" class="step-img" alt="" src="" onerror="this.style.visibility='hidden'"/>
+        <img id="stepImage" class="step-img" alt="" src="" onerror="this.style.visibility='hidden'; this.style.opacity='1';"/>
         <div class="action"><p id="action"></p></div>
 
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
