@@ -53,6 +53,9 @@ Clouds & Keys — Guided iCloud Security Review v26
   .badge.minimal{background:#ECFDF5;color:#065F46}
   .badge.low{background:#FFFBEB;color:#92400E}
   .badge.high{background:#FEF2F2;color:#991B1B}
+  /* Inline severity tag (only shown for Critical items) */
+  .sev{display:inline-flex;align-items:center;justify-content:center;margin-left:10px;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.2px;border:1px solid var(--ck-border)}
+  .sev-critical{background:#FEF2F2;color:#991B1B;border-color:#FECACA}
   /* Drawer */
   .drawer-mask{position:fixed;inset:0;background:rgba(17,24,39,.35);backdrop-filter:blur(1px);opacity:0;pointer-events:none;transition:opacity .2s}
   .drawer-mask.open{opacity:1;pointer-events:auto}
@@ -68,6 +71,22 @@ Clouds & Keys — Guided iCloud Security Review v26
   .status.enabled{background:var(--ck-green);border-color:var(--ck-green)}
   .status.skipped{background:#9CA3AF;border-color:#9CA3AF}
   .row-title{font-size:14px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* Critical indicator in drawer list */
+  .crit-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#DC2626; /* red */
+    border:1px solid #FECACA;
+    flex:0 0 auto;
+  }
+  .crit-bang{
+    font-size:12px;
+    font-weight:900;
+    color:#DC2626;
+    line-height:1;
+    flex:0 0 auto;
+  }
   /* Amber flash when skipping */
   .progress.flash{background:#FDE68A!important}
   @media(max-width:520px){
@@ -270,7 +289,7 @@ Clouds & Keys — Guided iCloud Security Review v26
      img:"images/19.png", weight:1, mult:.10},
     {id:"notSecure", cat:"Safe Browsing", sev:"low",
      title:"Not Secure Connection Warning",
-     why:"This alert warns when a website doesn’t encrypt your data.",
+     why:"This alert warns when a website doesn’t encrypt data you enter.",
      action:"Settings → Apps → Safari → Show Not Secure Warnings → On",
      img:"images/20.png", weight:1, mult:.10}
   ];
@@ -339,8 +358,22 @@ Clouds & Keys — Guided iCloud Security Review v26
       const row=document.createElement('div'); row.className='row';
       row.onclick=()=>{ idx=i; closeProgressDrawer(); showStep(); window.scrollTo({top:0,behavior:'smooth'}); };
       const dot=document.createElement('i'); dot.className='status ' + (state[p.id]||'skipped');
-      const title=document.createElement('div'); title.className='row-title'; title.textContent=`${i+1}. ${p.title}`;
-      row.appendChild(dot); row.appendChild(title); drawerList.appendChild(row);
+      const title=document.createElement('div');
+      title.className='row-title';
+      title.textContent=`${i+1}. ${p.title}`;
+
+      row.appendChild(dot);
+      row.appendChild(title);
+
+      // Add subtle critical indicator (dot) for Critical items only (right aligned)
+      if(p.sev === 'critical'){
+        const crit=document.createElement('i');
+        crit.className='crit-dot';
+        crit.style.marginLeft = 'auto';
+        row.appendChild(crit);
+      }
+
+      drawerList.appendChild(row);
     });
   }
 
@@ -351,9 +384,11 @@ Clouds & Keys — Guided iCloud Security Review v26
     if(idx>=protections.length){ stepArea.classList.add('hidden'); confirmView.classList.remove('hidden'); updateProgressUI(); return; }
     confirmView.classList.add('hidden'); stepArea.classList.remove('hidden');
     const p = protections[idx];
-    stepTitle.textContent = p.title;
-    detailEl.innerHTML = `<div class="muted" style="margin-bottom:6px;">${p.cat} • ${p.sev[0].toUpperCase()+p.sev.slice(1)}</div>
-    <p style="margin-top:0;color:#111827;">${p.why}</p>`;
+    // Title (show severity only if Critical)
+    stepTitle.innerHTML = `${p.title}${p.sev==='critical' ? ' <span class="sev sev-critical">Critical</span>' : ''}`;
+
+    // Keep the wizard copy tight: only the short "why" line
+    detailEl.innerHTML = `<p style="margin-top:0;color:#111827;">${p.why}</p>`;
     actionEl.textContent = p.action;
     // image fade
     stepImg.style.opacity = 0; stepImg.style.display='block'; stepImg.style.visibility='visible';
